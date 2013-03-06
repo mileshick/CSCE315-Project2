@@ -1,0 +1,55 @@
+User launches program and sees a title/introduction screen/message
+User enters a move by typing positions
+User enters a move by defined click-and-move process
+User sees a display of the current board state
+Check to see if player has any moves, if they dont they lose
+Check to see if both players still have pieces
+Game is checked to determine if maximum number of moves has been exceeded.
+User gets response of invalid if proposing an invalid move
+Computer identifies all valid moves
+Computer can randomly select a valid move
+Computer looks ahead one move in tree
+Minimax tree used for AI
+Alpha-beta pruning implemented at one level
+Alpha-beta pruning implemented across all levels
+Iterative deepening implemented
+Board evaluation function works for determining winner/loser
+*change board size
+highlight the pieces that have vaild moves aviaible
+*show vaild moves
+make a board that can be accessed remotely
+make an ai that can be played against remotely
+Timer for AI
+Timer for User
+Allow a timed game or non timed game
+display count down timer
+Mantiane board state
+Keep of pieces that are gone
+Display pieces on the side of the board
+Track whos turn it is
+Display whos turn it is
+only allow users to effect pieces they control
+Viasual for AI last move
+Viuasl for user last move
+tracker mutiple jumps
+If a cature move can be made it must be made
+Allow to pass turn
+program AI with staggles
+watch where pieces have been, they are not allows to be in the same space
+Create button to allow and restart game
+*Allow user to undo a move
+difffulty settings on the AI
+Make funny names for the AI settings
+*Make a chat function
+*Make AI taunt in chat
+Captures 2 different ways
+Allow to move only if can not capture
+Allow diangle and foward movement
+Disallow pieces to move to a spot with a piece in it
+
+
+
+
+
+
+
