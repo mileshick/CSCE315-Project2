@@ -1,9 +1,11 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JDialog;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.Window.Type;
 import java.awt.GridLayout;
@@ -55,7 +57,8 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		setTitle("Team 03 Project 2");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setResizable(false);
+		setBounds(100, 100, 700, 450);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -99,6 +102,12 @@ public class MainWindow extends JFrame {
 				.addGap(0, 231, Short.MAX_VALUE)
 		);
 		contentPane.setLayout(gl_contentPane);
+		
+		// draw board
+		Board myBoard = new Board();
+		Color boardColor = new Color(0x855E42); //set color to brown
+		myBoard.setBackground(boardColor);
+		setContentPane(myBoard);
 	}
 }
 

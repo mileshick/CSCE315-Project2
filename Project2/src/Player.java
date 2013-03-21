@@ -2,7 +2,7 @@
  */
 
 public class Player {
-	public Player(boolean isUser, Color whichColor){
+	public Player(boolean isUser, PieceColor whichColor){
 		playerColor = whichColor;
 		user = isUser;
 	}
@@ -11,10 +11,10 @@ public class Player {
 		return user;
 	}
 	
-	public Color whichColor(){
+	public PieceColor whichColor(){
 		return playerColor;
 	}
 	
 	private boolean user;//true if a person, false if AI
-	Color playerColor;			
+	PieceColor playerColor;			
 }

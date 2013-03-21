@@ -1,5 +1,5 @@
 //Not sure if any imports are needed
-enum Color {WHITE, BLACK};
+enum PieceColor {WHITE, BLACK};
 public class GamePiece {
 	public GamePiece(){
 		x = -1;	//-1 will be used for off the board
@@ -11,7 +11,7 @@ public class GamePiece {
 	}
 	
 	public GamePiece(int xPosition, int yPosition,
-			Color pieceColor){
+			PieceColor pieceColor){
 		x = xPosition;
 		y = yPosition;
 		color = pieceColor;
@@ -22,7 +22,7 @@ public class GamePiece {
 		return 0;
 	}
 	
-	public Color getColor(){
+	public PieceColor getColor(){
 		return color;
 	}
 	
@@ -31,13 +31,13 @@ public class GamePiece {
 		y = yPosition;
 	}
 	
-	public void setColor(Color newColor){
-		newColor = color;
+	public void setColor(PieceColor newColor){
+		color = newColor;
 	}
 	
 	private int x;
 	private int y;
-	Color color;	
+	PieceColor color;	
 }
 
 class GamePieceDrawable {
