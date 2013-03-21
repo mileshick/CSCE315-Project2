@@ -1,5 +1,5 @@
 //Not sure if any imports are needed
-enum PieceColor {WHITE, BLACK};
+enum PieceColor {WHITE, BLACK, NULL};
 public class GamePiece {
 	public GamePiece(){
 		x = -1;	//-1 will be used for off the board
@@ -17,9 +17,14 @@ public class GamePiece {
 		color = pieceColor;
 	}
 	
-	public int getPosition(){
+	public int getXPosition(){
 		//might need to come up with position type
-		return 0;
+		return x;
+	}
+	
+	public int getYPosition(){
+		//might need to come up with position type
+		return y;
 	}
 	
 	public PieceColor getColor(){
@@ -32,7 +37,7 @@ public class GamePiece {
 	}
 	
 	public void setColor(PieceColor newColor){
-		color = newColor;
+		newColor = color;
 	}
 	
 	private int x;
