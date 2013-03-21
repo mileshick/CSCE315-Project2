@@ -30,11 +30,11 @@ public class Board extends JPanel {
 		
 		// draw vertical lines
 		for(int x=50; x<=650; x+=75) {
-			g.drawLine(x,50,x,375);
+			g.drawLine(x,50,x,350);
 		}
 		
 		// draw top pieces
-		g.setColor(Color.white);
+		/*g.setColor(Color.white);
 		for(int x=50; x<=1350; x+=150){
 			g.drawOval(x/2,25,50,50);
 			g.fillOval(x/2,25,50,50);
@@ -45,7 +45,7 @@ public class Board extends JPanel {
 		for(int x=50; x<=1350; x+=150){
 			g.drawOval(x/2,325,50,50);
 			g.fillOval(x/2,325,50,50);
-		}
+		}*/
 
 	}
 	
