@@ -2,7 +2,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-enum MOVE {FOWARD, BACK, LEFT, RIGHT, DF-RIGHT, DF-LEFT, DB-RIGHT, DB-LEFT};
+import java.util.*;
+enum MOVE {FOWARD, BACK, LEFT, RIGHT, DF_RIGHT, DF_LEFT, DB_RIGHT, DB_LEFT};
 public class Board extends JPanel {
 	public Board(){
 		/* initialize game state here; create pieces,
@@ -10,34 +11,40 @@ public class Board extends JPanel {
 		 */
 		 
 		 //set up the white pieces need to figure out how to set all the x and y positions
+		int xPos = 0;
+		int yPos = 0;
+		int ROWS = 5;
+		int COLS = 9;
+		pieces = new GamePiece[21];
 		 for(int i=0;i < 11; i++){
-		 tempPiece = GamePiece(int xPosition, int yPosition,WHITE);
+		 GamePiece tempPiece = new GamePiece(xPos, yPos, PieceColor.WHITE);
 		 pieces[i] = tempPiece;
 		 }
 		 //set up the black pieces need to figure out how to set all the x and y positions
 		 for(int k=11; k < 21; k++){
-		 tempPiece = GamePiece(int xPosition, int yPosition,BLACK);
-		 pieces[i] = tempPiece;
+		 GamePiece tempPiece = new GamePiece(xPos, yPos, PieceColor.BLACK);
+		 pieces[k] = tempPiece;
 		 }
 		 
-		boolean[][] pieceBoardThere = new boolean[ROWS][COLS]; 
-		Arrays.fill(pieceBoard, true);
-		pieceBoard[3][5] = false;
+		pieceBoardThere = new boolean[ROWS][COLS]; 
+		for(int i = 0; i < pieceBoardThere.length - 1; i++)
+			for(int j = 0; i < pieceBoardThere.length - 1; i++)
+				pieceBoardThere[3][5] = false;
 		
-		Color[][] pieceBoardColor = new Color[][]{{BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK},{BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK}
-		,{BLACK,WHITE,BLACK,WHITE,NULL,BLACK,WHITE,BLACK,WHITE},{WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE},{WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE}};
+		pieceBoardColor = new PieceColor[][]{{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK},{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK}
+		,{PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE,PieceColor.NULL,PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE},{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE},{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE}};
 	
 	}
 	// still not done has working checking blocked in and if opposite color is within 2 squaures
-	private boolean isMoveValid(GamePiece piece , string move){
+	private boolean isMoveValid(GamePiece piece , MOVE move){
 		//the valid move checker
 		int positionX, positionY;
-		positionX = getXPosition();
-		positionY = getYPosition();
+		positionX = piece.getXPosition();
+		positionY = piece.getYPosition();
 		boolean valid = false;
 		//int[][] gridBoard = new int[][];
 		boolean[][] attackGridThere = new boolean[5][5];
-		Color[][] attackGridColor = new Color[5][5];
+		PieceColor[][] attackGridColor = new PieceColor[5][5];
 		/*(bool,Color)[][] pieceBoard = new (bool,Color)[][] {{(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK)}
 		,{(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK),(true,BLACK)},{(true,BLACK),(true,WHITE),(true,BLACK),(true,WHITE),(true,NULL),(true,BLACK),(true,WHITE),(true,BLACK),(true,WHITE)}
 		,{(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE)},{(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE),(true,WHITE)}};
@@ -91,14 +98,14 @@ public class Board extends JPanel {
 		
 		for(int j=1;j<attackGridThere.length - 1; j++){
 			for(int i=1;i<attackGridThere[0].length - 1;i++){
-				if(pieceBoardThere == true)
-				vaild = false;
+				if(pieceBoardThere[i][j] == true)
+				valid = false;
 				else
-				vaild = true;
+				valid = true;
 			}
 		}
 		
-		if(vaild == true){
+		if(valid == true){
 			//fill 00,02,04,20,24,40,42,44
 			for(int i=0;i<5;i=i+2){
 				for(int j=0;j<5;j=j+2){
@@ -119,7 +126,7 @@ public class Board extends JPanel {
 			// check if any of those are oppostie color and a clear path
 		}
 		
-		if(vaild == false){
+		if(valid == false){
 			
 		}
 		/*
@@ -139,11 +146,11 @@ public class Board extends JPanel {
 			
 		
 		
-		return vaild;
+		return valid;
 	}
 	
 	public void movePiece(/*need to figure out what goes here*/){
-		if(isMoveValid(/*move stuff*/)){
+		if(/*isMoveValid(move stuff)*/true){
 			//do move
 		}
 	}
@@ -201,7 +208,7 @@ public class Board extends JPanel {
 			g.drawLine(650,275-x,575-x,350);
 		}
 		
-		/*
+		
 		// draw top pieces
 		g.setColor(Color.white);
 		for(int x=50; x<=1350; x+=150){
@@ -215,10 +222,13 @@ public class Board extends JPanel {
 			g.drawOval(x/2,325,50,50);
 			g.fillOval(x/2,325,50,50);
 		}
-		*/
+		
 	}
 	
 	private GamePiece[] pieces;
+	private boolean[][] pieceBoardThere;
+	private PieceColor[][] pieceBoardColor;
+	private boolean attacksAvailable;
 	private Player player1;
 	private Player player2;
 
