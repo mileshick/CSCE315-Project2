@@ -29,7 +29,7 @@ public class Board extends JPanel {
 		pieceBoardThere = new boolean[ROWS][COLS]; 
 		for(int i = 0; i < pieceBoardThere.length - 1; i++)
 			for(int j = 0; i < pieceBoardThere.length - 1; i++)
-				pieceBoardThere[3][5] = false;
+				pieceBoardThere[3][5] = true;
 		
 		pieceBoardColor = new PieceColor[][]{{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK},{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK}
 		,{PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE,PieceColor.NULL,PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE},{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE},{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE}};
@@ -169,7 +169,7 @@ public class Board extends JPanel {
 			g.drawLine(50,y,650,y);
 		}
 		
-		// draw vertical lines
+		// draw vertical linesArrays.fill(pieceBoardThere, true);
 		for(int x=50; x<=650; x+=75) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(3));
