@@ -2,46 +2,37 @@
 enum PieceColor {WHITE, BLACK, NULL};
 public class GamePiece {
 	public GamePiece(){
-		x = -1;	//-1 will be used for off the board
-		y = -1;
+		position = new Position(-1,-1);	//-1 will be used for off the board
+		color = PieceColor.NULL;
 	}
 	
 	public void drawPiece(){
 		//GUI stuff here
 	}
 	
-	public GamePiece(int xPosition, int yPosition,
-			PieceColor pieceColor){
-		x = xPosition;
-		y = yPosition;
+	public GamePiece(Position piecePos, PieceColor pieceColor){
+		position = piecePos;
 		color = pieceColor;
 	}
 	
-	public int getXPosition(){
+	public Position getPosition(){
 		//might need to come up with position type
-		return x;
-	}
-	
-	public int getYPosition(){
-		//might need to come up with position type
-		return y;
+		return position;
 	}
 	
 	public PieceColor getColor(){
 		return color;
 	}
 	
-	public void setPosition(int xPosition, int yPosition){
-		x = xPosition;
-		y = yPosition;
+	public void setPosition(Position piecePos){
+		position = piecePos;
 	}
 	
 	public void setColor(PieceColor newColor){
 		newColor = color;
 	}
 	
-	private int x;
-	private int y;
+	private Position position;
 	PieceColor color;	
 }
 

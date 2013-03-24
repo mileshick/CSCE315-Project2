@@ -1,48 +1,99 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 enum MOVE {FOWARD, BACK, LEFT, RIGHT, DF_RIGHT, DF_LEFT, DB_RIGHT, DB_LEFT};
 public class Board extends JPanel {
-	
 	public Board(){
 		/* initialize game state here; create pieces,
 		 * populate board, make players, get everything setup
 		 */
-		 addMouseListener(new BoardAdapter());
-		 
-		 //set up the white pieces need to figure out how to set all the x and y positions
-		int xPos = 0;
-		int yPos = 0;
+		
+		int xPos = 25;
+		int yPos = 25;
 		int ROWS = 5;
 		int COLS = 9;
-		pieces = new GamePiece[21];
-		 for(int i=0;i < 11; i++){
-		 GamePiece tempPiece = new GamePiece(xPos, yPos, PieceColor.WHITE);
-		 pieces[i] = tempPiece;
+		
+		piecePositions = new Position[COLS][ROWS];
+		
+		/*for(int y=0; y<ROWS-1; y++) {
+			for(int x=0; x<COLS-1; x++){
+				xPos += 75;
+				piecePositions[x][y].x = xPos;
+				piecePositions[x][y].y = yPos;
+			}
+			yPos += 75;
+		}*/
+		
+		/*for(int i=0; i<ROWS-1; i++)
+			for(int j=0; j<COLS-1; j++)
+				System.out.print(piecePositions[j][i]);
+		*/
+		
+		pieces = new GamePiece[COLS][ROWS]; // total of 44 pieces & 45 spaces to move
+		
+		// top 2 rows - black
+		for(int y=0; y < ROWS-3; y++){
+			 for(int x=0; x < COLS; x++) {
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
+			 	pieces[x][y] = tempPiece;
+			 }
 		 }
-		 //set up the black pieces need to figure out how to set all the x and y positions
-		 for(int k=11; k < 21; k++){
-		 GamePiece tempPiece = new GamePiece(xPos, yPos, PieceColor.BLACK);
-		 pieces[k] = tempPiece;
+		
+		// middle row - black
+		for(int x=0; x < COLS-5; x+=2) {
+			int y = ROWS - 3;
+			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
+		 	pieces[x][y] = tempPiece;
+		}
+		for(int x=5; x < COLS; x+=2) {
+			int y = ROWS - 3;
+			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
+		 	pieces[x][y] = tempPiece;
+		}
+		
+		// middle row - white
+		for(int x=1; x < COLS-4; x+=2) {
+			int y = ROWS - 3;
+			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+		 	pieces[x][y] = tempPiece;
+		}
+		for(int x=6; x < COLS+1; x+=2) {
+			int y = ROWS - 3;
+			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+		 	pieces[x][y] = tempPiece;
+		}
+
+		// bottom 2 rows
+		for(int y=3; y < ROWS; y++){
+			for(int x=0; x < COLS; x++){
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+			 	pieces[x][y] = tempPiece;
+			 }
 		 }
+		 
 		 
 		pieceBoardThere = new boolean[ROWS][COLS]; 
 		for(int i = 0; i < pieceBoardThere.length - 1; i++)
 			for(int j = 0; i < pieceBoardThere.length - 1; i++)
-				pieceBoardThere[3][5] = true;
+				pieceBoardThere[3][5] = false;
 		
-		pieceBoardColor = new PieceColor[][]{{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK},{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK}
-		,{PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE,PieceColor.NULL,PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE},{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE},{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE}};
+		pieceBoardColor = new PieceColor[][]{
+				{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK},
+				{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK},
+				{PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE,PieceColor.NULL, PieceColor.BLACK,PieceColor.WHITE,PieceColor.BLACK,PieceColor.WHITE},
+				{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE},
+				{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE}
+				};
 	
 	}
+	
 	// still not done has working checking blocked in and if opposite color is within 2 squaures
 	private boolean isMoveValid(GamePiece piece , MOVE move){
 		//the valid move checker
 		int positionX, positionY;
-		positionX = piece.getXPosition();
-		positionY = piece.getYPosition();
+		positionX = piece.getPosition().x;
+		positionY = piece.getPosition().y;
 		boolean valid = false;
 		//int[][] gridBoard = new int[][];
 		boolean[][] attackGridThere = new boolean[5][5];
@@ -171,7 +222,7 @@ public class Board extends JPanel {
 			g.drawLine(50,y,650,y);
 		}
 		
-		// draw vertical linesArrays.fill(pieceBoardThere, true);
+		// draw vertical lines
 		for(int x=50; x<=650; x+=75) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(3));
@@ -217,9 +268,34 @@ public class Board extends JPanel {
 			g.drawOval(x/2,25,50,50);
 			g.fillOval(x/2,25,50,50);
 		}
+		for(int x=50; x<=1350; x+=150){
+			g.drawOval(x/2,100,50,50);
+			g.fillOval(x/2,100,50,50);
+		}
+		for(int x=200; x<=500; x+=300){
+			g.drawOval(x/2,175,50,50);
+			g.fillOval(x/2,175,50,50);
+		}
+		for(int x=950; x<=1250; x+=300){
+			g.drawOval(x/2,175,50,50);
+			g.fillOval(x/2,175,50,50);
+		}
+
 		
 		// draw bottom pieces
 		g.setColor(Color.black);
+		for(int x=50; x<=350; x+=300){
+			g.drawOval(x/2,175,50,50);
+			g.fillOval(x/2,175,50,50);
+		}
+		for(int x=800; x<=1100; x+=300){
+			g.drawOval(x/2,175,50,50);
+			g.fillOval(x/2,175,50,50);
+		}
+		for(int x=50; x<=1350; x+=150){
+			g.drawOval(x/2,250,50,50);
+			g.fillOval(x/2,250,50,50);
+		}
 		for(int x=50; x<=1350; x+=150){
 			g.drawOval(x/2,325,50,50);
 			g.fillOval(x/2,325,50,50);
@@ -227,31 +303,12 @@ public class Board extends JPanel {
 		
 	}
 	
-	private class BoardAdapter extends MouseAdapter{
-		public void mousePressed(MouseEvent me){
-			int x = me.getX();
-			int y = me.getY();
-			int columns = 9;
-			int rows = 5;
-			int columnSelected = -1;
-			int rowSelected = -1;
-			int columnSelectedPos = -1;
-			int rowSelectedPos = -1;
-			
-			//try to figure out which cell was clicked on
-			System.out.printf("Mouse x: %d\nMouse y: %d\n", x, y);
-			columnSelected = (x+25)/50;
-			rowSelected = (y+25)/50;
-			System.out.printf("Column: %d\nRow: %d\n", 
-					columnSelected, rowSelected);
-		}
-	}
-	
-	private GamePiece[] pieces;
+	private GamePiece[][] pieces;
 	private boolean[][] pieceBoardThere;
 	private PieceColor[][] pieceBoardColor;
 	private boolean attacksAvailable;
 	private Player player1;
 	private Player player2;
+	private Position[][] piecePositions;
 
 }
