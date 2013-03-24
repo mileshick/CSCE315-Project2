@@ -9,8 +9,8 @@ public class Board extends JPanel {
 		 * populate board, make players, get everything setup
 		 */
 		addMouseListener(new BoardAdapter());
-		int xPos = 25;
-		int yPos = 25;
+		int xPos = 50;
+		int yPos = 50;
 		ROWS = 5;
 		COLS = 9;
 		
@@ -21,7 +21,7 @@ public class Board extends JPanel {
 				piecePositions[x][y] = new Position(xPos, yPos);
 				xPos += 75;
 			}
-			xPos = 25;
+			xPos = 50;
 			yPos += 75;
 		}
 		
@@ -315,7 +315,7 @@ public class Board extends JPanel {
 			int mouseY = me.getY();
 			System.out.printf("Mouse x: %d\nMouse y: %d\n",mouseX, mouseY);
 			
-			for (int i = 0; i < )
+			
 		}
 	}
 	private GamePiece[][] pieces;
