@@ -319,24 +319,25 @@ public class Board extends JPanel {
 			System.out.printf("Mouse x: %d\nMouse y: %d\n",mouseX, mouseY);
 			
 			for (int i = 0; i < piecePositions.length; i++){
-				if(mouseX > (piecePositions[i][0].x - 50) && mouseX < (piecePositions[i][0].x + 50)){
+				if(mouseX > (piecePositions[i][0].x - 25) && mouseX < (piecePositions[i][0].x + 25)){
 					System.out.print("Checking mouse position\n");
 					mouseCol = i;
 				}
 			}
 			for (int i = 0; i < piecePositions[0].length; i++){
-				if(mouseY > (piecePositions[0][i].y - 50) && mouseY < (piecePositions[0][i].y + 50)){
+				if(mouseY > (piecePositions[0][i].y - 25) && mouseY < (piecePositions[0][i].y + 25)){
 					mouseRow = i;
 				}
 			}
 			System.out.printf("Column Clicked: %d\nRow Clicked: %d\n", mouseCol, mouseRow);
-			if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
-				System.out.println("Nothing to see here!");
-			if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
-				System.out.println("White Piece clicked!");
-			if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
-				System.out.println("Black piece clicked!");
-
+			if(mouseCol > -1 && mouseRow > -1){
+				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
+					System.out.println("Nothing to see here!");
+				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
+					System.out.println("White Piece clicked!");
+				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
+					System.out.println("Black piece clicked!");
+			}
 		}
 	}
 	private GamePiece[][] pieces;
