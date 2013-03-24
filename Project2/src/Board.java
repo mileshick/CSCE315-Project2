@@ -268,50 +268,28 @@ public class Board extends JPanel {
 			g.drawLine(650,275-x,575-x,350);
 		}
 		
-		
-		// draw top pieces
-		g.setColor(Color.white);
-		for(int x=50; x<=1350; x+=150){
-			g.drawOval(x/2,25,50,50);
-			g.fillOval(x/2,25,50,50);
+		// draw pieces
+		for(int y=0; y<ROWS; y++) {
+			for(int x=0; x<COLS; x++) {
+				if(pieces[x][y].getColor()!=PieceColor.NULL) {
+					if(pieces[x][y].getColor() == PieceColor.BLACK)
+						g.setColor(Color.black);
+					if(pieces[x][y].getColor() == PieceColor.WHITE)
+						g.setColor(Color.white);
+					g.drawOval(pieces[x][y].getPosition().x-25, pieces[x][y].getPosition().y-25, 50, 50);
+					g.fillOval(pieces[x][y].getPosition().x-25, pieces[x][y].getPosition().y-25, 50, 50);
+				}
+			}
 		}
-		for(int x=50; x<=1350; x+=150){
-			g.drawOval(x/2,100,50,50);
-			g.fillOval(x/2,100,50,50);
+		if(pieceSelectedCol != -1 && pieceSelectedRow != -1){
+			g.setColor(Color.red);
+			g.drawOval(pieces[pieceSelectedCol][pieceSelectedRow].getPosition().x-25,
+					pieces[pieceSelectedCol][pieceSelectedRow].getPosition().y-25, 50, 50);
 		}
-		for(int x=200; x<=500; x+=300){
-			g.drawOval(x/2,175,50,50);
-			g.fillOval(x/2,175,50,50);
-		}
-		for(int x=950; x<=1250; x+=300){
-			g.drawOval(x/2,175,50,50);
-			g.fillOval(x/2,175,50,50);
-		}
-
-		
-		// draw bottom pieces
-		g.setColor(Color.black);
-		for(int x=50; x<=350; x+=300){
-			g.drawOval(x/2,175,50,50);
-			g.fillOval(x/2,175,50,50);
-		}
-		for(int x=800; x<=1100; x+=300){
-			g.drawOval(x/2,175,50,50);
-			g.fillOval(x/2,175,50,50);
-		}
-		for(int x=50; x<=1350; x+=150){
-			g.drawOval(x/2,250,50,50);
-			g.fillOval(x/2,250,50,50);
-		}
-		for(int x=50; x<=1350; x+=150){
-			g.drawOval(x/2,325,50,50);
-			g.fillOval(x/2,325,50,50);
-		}
-		
 	}
 
 	private class BoardAdapter extends MouseAdapter {
-		public void mousePressed(MouseEvent me){
+		public void mouseClicked(MouseEvent me){
 			int mouseX = me.getX();
 			int mouseY = me.getY();
 			int mouseCol = -1;
@@ -330,14 +308,38 @@ public class Board extends JPanel {
 				}
 			}
 			System.out.printf("Column Clicked: %d\nRow Clicked: %d\n", mouseCol, mouseRow);
+			//Handle piece selection
 			if(mouseCol > -1 && mouseRow > -1){
+				//Print to console for debugging purposes
 				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
 					System.out.println("Nothing to see here!");
 				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
 					System.out.println("White Piece clicked!");
 				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
 					System.out.println("Black piece clicked!");
+			//Start cases for selecting a piece
+				//No piece selected, pick the piece that was clicked if it was white
+				if(pieceSelectedCol == -1 && pieceSelectedRow == -1){
+					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE){
+						pieceSelectedCol = mouseCol;
+						pieceSelectedRow = mouseRow;
+					}
+				}
+				//Piece selected, but user selects another piece
+				else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE){
+					pieceSelectedCol = mouseCol;
+					pieceSelectedRow = mouseRow;
+				}
+				//User clicks black piece, de-select current selected piece
+				else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK){
+					pieceSelectedCol = -1;
+					pieceSelectedRow = -1;
+				}
+				else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL){
+					
+				}
 			}
+			repaint();
 		}
 	}
 	private GamePiece[][] pieces;
@@ -347,7 +349,9 @@ public class Board extends JPanel {
 	private Player player1;
 	private Player player2;
 	private Position[][] piecePositions;
-	int ROWS;
-	int COLS;
+	private int pieceSelectedCol = -1;
+	private int pieceSelectedRow = -1;
+	private int ROWS;
+	private int COLS;
 
 }
