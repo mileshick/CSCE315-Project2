@@ -14,20 +14,26 @@ public class Board extends JPanel {
 		int ROWS = 5;
 		int COLS = 9;
 		
-		piecePositions = new Position[COLS][ROWS];
+		piecePositions = new Position[COLS][ROWS];	
 		
-		/*for(int y=0; y<ROWS-1; y++) {
-			for(int x=0; x<COLS-1; x++){
+		for(int y=0; y<ROWS; y++) {
+			for(int x=0; x<COLS; x++){
+				piecePositions[x][y] = new Position(xPos, yPos);
 				xPos += 75;
-				piecePositions[x][y].x = xPos;
-				piecePositions[x][y].y = yPos;
 			}
+			xPos = 25;
 			yPos += 75;
-		}*/
+		}
 		
-		/*for(int i=0; i<ROWS-1; i++)
-			for(int j=0; j<COLS-1; j++)
-				System.out.print(piecePositions[j][i]);
+		/*
+		int count=0;
+		for(int i=0; i<ROWS; i++)
+			for(int j=0; j<COLS; j++){
+				System.out.print(piecePositions[j][i].x + ", ");
+				System.out.print(piecePositions[j][i].y + "\n");
+				count++;
+			}
+		System.out.print(count + "\n");
 		*/
 		
 		pieces = new GamePiece[COLS][ROWS]; // total of 44 pieces & 45 spaces to move
@@ -302,15 +308,14 @@ public class Board extends JPanel {
 		}
 		
 	}
-	
+
 	private class BoardAdapter extends MouseAdapter {
 		public void mousePressed(MouseEvent me){
 			int mouseX = me.getX();
 			int mouseY = me.getY();
-			System.out.printf("Mouse x: %d\nMouse y: %d\n",mouseX, mouseY);
+			System.out.printf("Mouse x: %d\nMouse y: %d\n",mouseX, mouseY);			
 		}
 	}
-	
 	private GamePiece[][] pieces;
 	private boolean[][] pieceBoardThere;
 	private PieceColor[][] pieceBoardColor;
