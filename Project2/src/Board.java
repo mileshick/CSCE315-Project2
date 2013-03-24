@@ -77,12 +77,13 @@ public class Board extends JPanel {
 			 	pieces[x][y] = tempPiece;
 			 }
 		 }
+		 pieces[4][2] = new GamePiece(piecePositions[4][2],PieceColor.NULL);
 		 
-		 
-		pieceBoardThere = new boolean[ROWS][COLS]; 
-		for(int i = 0; i < pieceBoardThere.length - 1; i++)
-			for(int j = 0; i < pieceBoardThere.length - 1; i++)
-				pieceBoardThere[3][5] = false;
+		pieceBoardThere = new boolean[COLS][ROWS]; 
+		for(int i = 0; i < pieceBoardThere.length; i++)
+			for(int j = 0; i < pieceBoardThere.length; i++)
+				pieceBoardThere[i][j] = true;
+		pieceBoardThere[4][2] = false;
 		
 		pieceBoardColor = new PieceColor[][]{
 				{PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK,PieceColor.BLACK},
@@ -313,9 +314,29 @@ public class Board extends JPanel {
 		public void mousePressed(MouseEvent me){
 			int mouseX = me.getX();
 			int mouseY = me.getY();
+			int mouseCol = -1;
+			int mouseRow = -1;
 			System.out.printf("Mouse x: %d\nMouse y: %d\n",mouseX, mouseY);
 			
-			
+			for (int i = 0; i < piecePositions.length; i++){
+				if(mouseX > (piecePositions[i][0].x - 50) && mouseX < (piecePositions[i][0].x + 50)){
+					System.out.print("Checking mouse position\n");
+					mouseCol = i;
+				}
+			}
+			for (int i = 0; i < piecePositions[0].length; i++){
+				if(mouseY > (piecePositions[0][i].y - 50) && mouseY < (piecePositions[0][i].y + 50)){
+					mouseRow = i;
+				}
+			}
+			System.out.printf("Column Clicked: %d\nRow Clicked: %d\n", mouseCol, mouseRow);
+			if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
+				System.out.println("Nothing to see here!");
+			if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
+				System.out.println("White Piece clicked!");
+			if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
+				System.out.println("Black piece clicked!");
+
 		}
 	}
 	private GamePiece[][] pieces;
