@@ -5,10 +5,12 @@ import javax.swing.*;
 import java.util.*;
 enum MOVE {FOWARD, BACK, LEFT, RIGHT, DF_RIGHT, DF_LEFT, DB_RIGHT, DB_LEFT};
 public class Board extends JPanel {
+	
 	public Board(){
 		/* initialize game state here; create pieces,
 		 * populate board, make players, get everything setup
 		 */
+		 addMouseListener(new BoardAdapter());
 		 
 		 //set up the white pieces need to figure out how to set all the x and y positions
 		int xPos = 0;
@@ -223,6 +225,26 @@ public class Board extends JPanel {
 			g.fillOval(x/2,325,50,50);
 		}
 		
+	}
+	
+	private class BoardAdapter extends MouseAdapter{
+		public void mousePressed(MouseEvent me){
+			int x = me.getX();
+			int y = me.getY();
+			int columns = 9;
+			int rows = 5;
+			int columnSelected = -1;
+			int rowSelected = -1;
+			int columnSelectedPos = -1;
+			int rowSelectedPos = -1;
+			
+			//try to figure out which cell was clicked on
+			System.out.printf("Mouse x: %d\nMouse y: %d\n", x, y);
+			columnSelected = (x+25)/50;
+			rowSelected = (y+25)/50;
+			System.out.printf("Column: %d\nRow: %d\n", 
+					columnSelected, rowSelected);
+		}
 	}
 	
 	private GamePiece[] pieces;
