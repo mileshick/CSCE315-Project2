@@ -8,7 +8,7 @@ public class Board extends JPanel {
 		/* initialize game state here; create pieces,
 		 * populate board, make players, get everything setup
 		 */
-		
+		addMouseListener(new BoardAdapter());
 		int xPos = 25;
 		int yPos = 25;
 		int ROWS = 5;
@@ -301,6 +301,14 @@ public class Board extends JPanel {
 			g.fillOval(x/2,325,50,50);
 		}
 		
+	}
+	
+	private class BoardAdapter extends MouseAdapter {
+		public void mousePressed(MouseEvent me){
+			int mouseX = me.getX();
+			int mouseY = me.getY();
+			System.out.printf("Mouse x: %d\nMouse y: %d\n",mouseX, mouseY);
+		}
 	}
 	
 	private GamePiece[][] pieces;
