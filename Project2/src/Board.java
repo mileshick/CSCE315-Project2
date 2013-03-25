@@ -92,6 +92,10 @@ public class Board extends JPanel {
 				{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE},
 				{PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE,PieceColor.WHITE}
 				};
+		
+		// initialize directions that are available for each position
+		
+		
 	
 	}
 	
@@ -240,34 +244,20 @@ public class Board extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(3));
 		
-		// left half of board
-		for(int x=0; x<=275; x+=75) {
-			g.drawLine(50,125+x,125+x,50);
-		}
-		for(int x=0; x<=200; x+=75) {
-			g.drawLine(350,275-x,275-x,350);
-		}
-		for(int x=0; x<=275; x+=75) {
-			g.drawLine(275-x,50,350,125+x);
-		}
-		for(int x=0; x<=200; x+=75) {
-			g.drawLine(50,275-x,125+x,350);
-		}
+		g.drawLine(50,200,200,50);
+		g.drawLine(50,350,350,50);
+		g.drawLine(200,350,500,50);
+		g.drawLine(350,350,650,50);
+		g.drawLine(500,350,650,200);
 		
-		// right half of board
-		for(int x=0; x<=275; x+=75){
-			g.drawLine(575-x,50,650,125+x);
-		}
-		for(int x=0; x<=200; x+=75){
-			g.drawLine(350,275-x,425+x,350);
-		}
-		for(int x=0; x<=275; x+=75){
-			g.drawLine(425+x,50,350,125+x);
-		}
-		for(int x=0; x<=200; x+=75){
-			g.drawLine(650,275-x,575-x,350);
-		}
+		g.drawLine(650,200,500,50);
+		g.drawLine(650,350,350,50);
+		g.drawLine(500,350,200,50);
+		g.drawLine(350,350,50,50);
+		g.drawLine(200,350,50,200);
 		
+		
+		/*
 		// draw pieces
 		for(int y=0; y<ROWS; y++) {
 			for(int x=0; x<COLS; x++) {
@@ -276,11 +266,11 @@ public class Board extends JPanel {
 						g.setColor(Color.black);
 					if(pieces[x][y].getColor() == PieceColor.WHITE)
 						g.setColor(Color.white);
-					g.drawOval(pieces[x][y].getPosition().x-25, pieces[x][y].getPosition().y-25, 50, 50);
+					//g.drawOval(pieces[x][y].getPosition().x-25, pieces[x][y].getPosition().y-25, 50, 50);
 					g.fillOval(pieces[x][y].getPosition().x-25, pieces[x][y].getPosition().y-25, 50, 50);
 				}
 			}
-		}
+		}*/
 		if(pieceSelectedCol != -1 && pieceSelectedRow != -1){
 			g.setColor(Color.red);
 			g.drawOval(pieces[pieceSelectedCol][pieceSelectedRow].getPosition().x-25,
@@ -314,7 +304,7 @@ public class Board extends JPanel {
 				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
 					System.out.println("Nothing to see here!");
 				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
-					System.out.println("White Piece clicked!");
+					System.out.println("White piece clicked!");
 				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
 					System.out.println("Black piece clicked!");
 			//Start cases for selecting a piece
