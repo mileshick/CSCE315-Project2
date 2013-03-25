@@ -94,7 +94,7 @@ public class Board extends JPanel {
 				};
 		
 		// initialize directions that are available for each position
-		/*
+
 		piecePositions[x][y].N=true;
 		piecePositions[x][y].NE=true;
 		piecePositions[x][y].E=true;
@@ -104,38 +104,25 @@ public class Board extends JPanel {
 		piecePositions[x][y].W=true;
 		piecePositions[x][y].NW=true;
 		
-		
-		for(int y=1; y < ROWS; y++) {
+		// top row
+		for(int y=0; y < ROWS; y++) {
 			for(int x=0; x < COLS; x++) {
-				if(COLS % 2==0 && ROWS % 2==0 && COLS != 0 && COLS != 8) {	// even
-					piecePositions[x][y].N=true;
-					piecePositions[x][y].NE=true;
+				if(COLS % 2==0) {	// even
 					piecePositions[x][y].E=true;
 					piecePositions[x][y].SE=true;
 					piecePositions[x][y].S=true;
 					piecePositions[x][y].SW=true;
 					piecePositions[x][y].W=true;
-					piecePositions[x][y].NW=true;
 				}
-				else if(COLS % 2==1 && ROWS % 2==1 && COLS != 0 && COLS != 8) {	// odd
-					piecePositions[x][y].N=true;
-					piecePositions[x][y].NE=true;
+				if(COLS % 2 == 1) {	// odd
 					piecePositions[x][y].E=true;
 					piecePositions[x][y].SE=true;
 					piecePositions[x][y].S=true;
-					piecePositions[x][y].SW=true;
-					piecePositions[x][y].W=true;
-					piecePositions[x][y].NW=true;
 				}
-				else if(COLS == 0) {	// cols 0
-
-				}
-				else {	// cols 8
-
-				}				
+				
+				
 			}
 		}
-		*/
 	
 	}
 	

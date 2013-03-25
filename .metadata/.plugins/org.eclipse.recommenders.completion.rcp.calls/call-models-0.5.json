@@ -1,1 +1,13 @@
-{}
+{
+  "C:\\Program Files\\Java\\jre7\\lib\\rt.jar": {
+    "coordinate": "jre:jre:zip:call:1.0.0",
+    "location": "C:\\Program Files\\Java\\jre7\\lib\\rt.jar",
+    "status": "RESOLVED",
+    "error": "No class path info available for \u0027C:\\Program Files\\Java\\jre7\\lib\\rt.jar\u0027. Skipped."
+  },
+  "C:\\Users\\Nathan\\Dropbox\\School\\13A\\CSCE 315\\AI Project\\GitHub\\CSCE315-Project2\\Project2\\src": {
+    "location": "C:\\Users\\Nathan\\Dropbox\\School\\13A\\CSCE 315\\AI Project\\GitHub\\CSCE315-Project2\\Project2\\src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027C:\\Users\\Nathan\\Dropbox\\School\\13A\\CSCE 315\\AI Project\\GitHub\\CSCE315-Project2\\Project2\\src\u0027. Skipped."
+  }
+}
