@@ -29,7 +29,7 @@ public class GamePiece {
 	}
 	
 	public void setColor(PieceColor newColor){
-		newColor = color;
+		color = newColor;
 	}
 	
 	private Position position;
