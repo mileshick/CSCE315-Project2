@@ -68,7 +68,7 @@ public class Board extends JPanel {
 			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
 		 	pieces[x][y] = tempPiece;
 		}
-		for(int x=COLS/2+2; x < COLS+1; x+=2) {
+		for(int x=COLS/2+2; x < COLS; x+=2) {
 			int y = ROWS/2;
 			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
 		 	pieces[x][y] = tempPiece;
