@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 enum MOVE {FOWARD, BACK, LEFT, RIGHT, DF_RIGHT, DF_LEFT, DB_RIGHT, DB_LEFT};
+enum GameState {Init, P1_Turn, P2_Turn, P1_Won, P2_Won, Tie};
 public class Board extends JPanel {
 	public Board(){
 		/* initialize game state here; create pieces,
@@ -13,6 +14,9 @@ public class Board extends JPanel {
 		int yPos = 50;
 		ROWS = 5;
 		COLS = 9;
+		
+		player1 = new Player(true, PieceColor.WHITE);
+		player2 = new Player(true, PieceColor.BLACK);
 		
 		piecePositions = new Position[COLS][ROWS];	
 		
@@ -130,7 +134,8 @@ public class Board extends JPanel {
 			}
 		}
 		*/
-	
+		boardState = GameState.Init;
+		updateState();
 	}
 
 	// still not done has working checking blocked in and if opposite color is within 2 squaures
@@ -279,6 +284,7 @@ public class Board extends JPanel {
 				pieces[x][y].setColor(PieceColor.WHITE);
 				pieceBoardThere[pieceSelectedCol][pieceSelectedRow] = false;
 			}
+			updateState();
 		}
 		else if (isMoveValid(pieceSelectedCol,pieceSelectedRow) && !(isAttackValid(pieceSelectedCol,pieceSelectedRow))){
 			//add move to possible moves
@@ -378,43 +384,100 @@ public class Board extends JPanel {
 			}
 			System.out.printf("Column Clicked: %d\nRow Clicked: %d\n", mouseCol, mouseRow);
 			//Handle piece selection
-			if(mouseCol > -1 && mouseRow > -1){
-				//Print to console for debugging purposes
-				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
-					System.out.println("Nothing to see here!");
-				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
-					System.out.println("White piece clicked!");
-				if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
-					System.out.println("Black piece clicked!");
-			//Start cases for selecting a piece
-				//No piece selected, pick the piece that was clicked if it was white
-				if(pieceSelectedCol == -1 && pieceSelectedRow == -1){
-					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE){
+			switch(boardState){
+			case P1_Turn:
+				if(mouseCol > -1 && mouseRow > -1 && player1.isUser()){
+					//Print to console for debugging purposes
+					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
+						System.out.println("Nothing to see here!");
+					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
+						System.out.println("White piece clicked!");
+					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
+						System.out.println("Black piece clicked!");
+				//Start cases for selecting a piece
+					//No piece selected, pick the piece that was clicked if it belongs to player
+					if(pieceSelectedCol == -1 && pieceSelectedRow == -1){
+						if(pieces[mouseCol][mouseRow].getColor() == player1.whichColor()){
+							pieceSelectedCol = mouseCol;
+							pieceSelectedRow = mouseRow;
+						}
+					}
+					//Piece selected, but user selects another piece
+					else if(pieces[mouseCol][mouseRow].getColor() == player1.whichColor()){
 						pieceSelectedCol = mouseCol;
 						pieceSelectedRow = mouseRow;
 					}
+					//User clicks other players piece, de-select current selected piece
+					else if(pieces[mouseCol][mouseRow].getColor() == player2.whichColor()){
+						pieceSelectedCol = -1;
+						pieceSelectedRow = -1;
+					}
+					else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL){
+						movePiece(pieces[pieceSelectedCol][pieceSelectedRow],mouseCol, mouseRow);
+						pieceSelectedCol = -1;
+						pieceSelectedRow = -1;
+					}
 				}
-				//Piece selected, but user selects another piece
-				else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE){
-					pieceSelectedCol = mouseCol;
-					pieceSelectedRow = mouseRow;
-				}
-				//User clicks black piece, de-select current selected piece
-				else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK){
-					pieceSelectedCol = -1;
-					pieceSelectedRow = -1;
-				}
-				else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL){
-					movePiece(pieces[pieceSelectedCol][pieceSelectedRow],mouseCol, mouseRow);
+				break;
+			case P2_Turn:
+				if(mouseCol > -1 && mouseRow > -1 && player2.isUser()){
+					//Print to console for debugging purposes
+					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
+						System.out.println("Nothing to see here!");
+					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
+						System.out.println("White piece clicked!");
+					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
+						System.out.println("Black piece clicked!");
+				//Start cases for selecting a piece
+					//No piece selected, pick the piece that was clicked if it belongs to player
+					if(pieceSelectedCol == -1 && pieceSelectedRow == -1){
+						if(pieces[mouseCol][mouseRow].getColor() == player2.whichColor()){
+							pieceSelectedCol = mouseCol;
+							pieceSelectedRow = mouseRow;
+						}
+					}
+					//Piece selected, but user selects another piece
+					else if(pieces[mouseCol][mouseRow].getColor() == player2.whichColor()){
+						pieceSelectedCol = mouseCol;
+						pieceSelectedRow = mouseRow;
+					}
+					//User clicks other player's piece, de-select current selected piece
+					else if(pieces[mouseCol][mouseRow].getColor() == player1.whichColor()){
+						pieceSelectedCol = -1;
+						pieceSelectedRow = -1;
+					}
+					//User clicks empty space, attempt to move selected piece there
+					else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL){
+						movePiece(pieces[pieceSelectedCol][pieceSelectedRow],mouseCol, mouseRow);
+						pieceSelectedCol = -1;
+						pieceSelectedRow = -1;//De-select space no matter what happens
+					}
 				}
 			}
 			repaint();
 		}
 	}
+	
+	private void updateState(){
+		switch (boardState){
+		case Init:
+			boardState = GameState.P1_Turn;
+			break;
+		case P1_Turn:
+			boardState = GameState.P2_Turn;
+			break;
+		case P2_Turn:
+			boardState = GameState.P1_Turn;
+			break;
+		}
+		turnCounter++;
+	}
+	
 	private GamePiece[][] pieces;
 	private boolean[][] pieceBoardThere;
 	private boolean[][] clearPath = new boolean[3][3];
 	private boolean attacksAvailable;
+	private boolean hasMoved;
 	private Player player1;
 	private Player player2;
 	private Position[][] piecePositions;
@@ -422,5 +485,6 @@ public class Board extends JPanel {
 	private int pieceSelectedRow = -1;
 	private int ROWS;
 	private int COLS;
-
+	private int turnCounter;
+	private GameState boardState;
 }
