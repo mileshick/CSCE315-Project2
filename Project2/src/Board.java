@@ -312,27 +312,40 @@ public class Board extends JPanel {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		int w = getWidth();
-        int h = getHeight();
+        	int h = getHeight();
 		
-        // center pt: (325, 175)
+      	 	int xMax = pieces[COLS-1][ROWS-1].getPosition().x;
+       		int yMax = pieces[COLS-1][ROWS-1].getPosition().y;
+        
+        	//System.out.printf("xMax: %d\nyMax: %d\n",xMax,yMax);
+        
+        	// center pt: (325, 175)
         
 		// draw horizontal lines
-		for(int y=50; y<=375; y+=75) {
+		for(int y=50; y<=yMax; y+=75) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(3));
-			g.drawLine(50,y,650,y);
+			g.drawLine(50,y,xMax,y);	
 		}
 		
 		// draw vertical lines
-		for(int x=50; x<=650; x+=75) {
+		for(int x=50; x<=xMax; x+=75) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(3));
-			g.drawLine(x,50,x,350);
+			g.drawLine(x,50,x,yMax);
 		}
 		
 		// draw diagonal lines
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(3));
+		
+		/*
+		// draw from center piece
+		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x+75,pieces[COLS/2][ROWS/2].getPosition().y+75 );
+		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x+75,pieces[COLS/2][ROWS/2].getPosition().y-75 );
+		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2].getPosition().y+75 );
+		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2].getPosition().y-75 );
+		*/
 		
 		g.drawLine(50,200,200,50);
 		g.drawLine(50,350,350,50);
@@ -345,7 +358,6 @@ public class Board extends JPanel {
 		g.drawLine(500,350,200,50);
 		g.drawLine(350,350,50,50);
 		g.drawLine(200,350,50,200);
-		
 		
 		
 		// draw pieces
