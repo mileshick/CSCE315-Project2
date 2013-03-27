@@ -43,7 +43,7 @@ public class Board extends JPanel {
 		pieces = new GamePiece[COLS][ROWS]; // total of 44 pieces & 45 spaces to move
 		
 		// top 2 rows - black
-		for(int y=0; y < ROWS-3; y++){
+		for(int y=0; y < ROWS/2; y++){
 			 for(int x=0; x < COLS; x++) {
 				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
 			 	pieces[x][y] = tempPiece;
@@ -51,37 +51,37 @@ public class Board extends JPanel {
 		 }
 		
 		// middle row - black
-		for(int x=0; x < COLS-5; x+=2) {
-			int y = ROWS - 3;
+		for(int x=0; x < COLS; x+=2) {
+			int y = ROWS/2;
 			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
 		 	pieces[x][y] = tempPiece;
 		}
 		for(int x=5; x < COLS; x+=2) {
-			int y = ROWS - 3;
+			int y = ROWS/2;
 			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
 		 	pieces[x][y] = tempPiece;
 		}
 		
 		// middle row - white
-		for(int x=1; x < COLS-4; x+=2) {
-			int y = ROWS - 3;
+		for(int x=1; x < COLS/2+1; x+=2) {
+			int y = ROWS/2;
 			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
 		 	pieces[x][y] = tempPiece;
 		}
-		for(int x=6; x < COLS+1; x+=2) {
-			int y = ROWS - 3;
+		for(int x=COLS/2+2; x < COLS+1; x+=2) {
+			int y = ROWS/2;
 			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
 		 	pieces[x][y] = tempPiece;
 		}
 
 		// bottom 2 rows
-		for(int y=3; y < ROWS; y++){
+		for(int y=ROWS/2; y < ROWS; y++){
 			for(int x=0; x < COLS; x++){
 				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
 			 	pieces[x][y] = tempPiece;
 			 }
 		 }
-		 pieces[4][2] = new GamePiece(piecePositions[4][2],PieceColor.NULL);
+		 pieces[COLS/2][ROWS/2] = new GamePiece(piecePositions[COLS/2][ROWS/2],PieceColor.NULL);
 		 
 		pieceBoardThere = new boolean[COLS][ROWS];
 
@@ -89,7 +89,7 @@ public class Board extends JPanel {
 			{
 			    Arrays.fill( pieceBoardThere[i], true );
 			}
-		pieceBoardThere[4][2] = false;
+		pieceBoardThere[COLS/2][ROWS/2] = false;
 
 		// initialize directions that are available for each position
 		/*
