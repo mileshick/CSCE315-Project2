@@ -58,8 +58,14 @@ public class Board extends JPanel {
 		}
 		for(int x=COLS/2+1; x < COLS; x+=2) {
 			int y = ROWS/2;
-			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
-		 	pieces[x][y] = tempPiece;
+			if(ROWS==3 && x==ROWS-1) {
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+			 	pieces[x][y] = tempPiece;
+			}
+			else {
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
+			 	pieces[x][y] = tempPiece;	
+			}
 		}
 		
 		// middle row - white
