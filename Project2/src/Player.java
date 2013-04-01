@@ -16,5 +16,5 @@ public class Player {
 	}
 	
 	private boolean user;//true if a person, false if AI
-	PieceColor playerColor;			
+	private PieceColor playerColor;			
 }

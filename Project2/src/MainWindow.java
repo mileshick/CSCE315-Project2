@@ -1,16 +1,16 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JDialog;
+import javax.swing.*;
+import java.awt.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.Window.Type;
 import java.awt.GridLayout;
 import javax.swing.SpringLayout;
 import javax.swing.JInternalFrame;
+
+import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -34,6 +34,8 @@ import net.miginfocom.swing.MigLayout;
 public class MainWindow extends JFrame {
 
 	private JPanel contentPane;
+	private NewGameWindow newGame;
+	private Board myBoard;
 
 	/**
 	 * Launch the application.
@@ -59,6 +61,8 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setBounds(100, 100, 700, 450);
+		newGame = new NewGameWindow();
+		myBoard = new Board();
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -67,6 +71,11 @@ public class MainWindow extends JFrame {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmNewGame = new JMenuItem("New Game");
+		mntmNewGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				newGame.setVisible(true);
+			}
+		});
 		mnFile.add(mntmNewGame);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
@@ -104,10 +113,166 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		
 		// draw board
-		Board myBoard = new Board();
+		//Board myBoard = new Board();
 		Color boardColor = new Color(0x855E42); //set color to brown
 		myBoard.setBackground(boardColor);
 		setContentPane(myBoard);
+	}
+	
+	class NewGameWindow extends JDialog {
+
+		private final JPanel contentPanel = new JPanel();
+		private JTextField textField;
+		private JTextField textField_1;
+		private final ButtonGroup buttonGroup = new ButtonGroup();
+		private final String twoPlayerCommand = "2";
+		private final String onePlayerCommand = "1";
+		private final String noPlayerCommand = "0";
+		private Player player1;
+		private Player player2;
+		private int ROWS;
+		private int COLS;
+
+		/**
+		 * Create the dialog.
+		 */
+		public NewGameWindow() {
+			setBounds(100, 100, 450, 300);
+			getContentPane().setLayout(new BorderLayout());
+			contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+			getContentPane().add(contentPanel, BorderLayout.CENTER);
+			contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					ColumnSpec.decode("default:grow"),},
+				new RowSpec[] {
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,}));
+			{
+				JLabel lblNumberOfPlayers = new JLabel("Number of Players");
+				contentPanel.add(lblNumberOfPlayers, "2, 2");
+			}
+			{
+				JLabel lblBoardSize = new JLabel("Board Size");
+				contentPanel.add(lblBoardSize, "14, 2");
+			}
+			{
+				JLabel lblColumns = new JLabel("# Columns");
+				contentPanel.add(lblColumns, "14, 6");
+			}
+			{
+				JRadioButton rdbtnPlayersNo = new JRadioButton("2 Players, No AI");
+				rdbtnPlayersNo.setActionCommand(twoPlayerCommand);
+				rdbtnPlayersNo.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						player1 = new Player(true, PieceColor.WHITE);
+						player2 = new Player(true, PieceColor.BLACK);
+					}
+				});
+				buttonGroup.add(rdbtnPlayersNo);
+				contentPanel.add(rdbtnPlayersNo, "2, 8");
+			}
+			{
+				textField = new JTextField();
+				contentPanel.add(textField, "14, 8, fill, default");
+				textField.setColumns(10);
+			}
+			{
+				JRadioButton rdbtnPlayer = new JRadioButton("1 Player, 1 AI");
+				rdbtnPlayer.setActionCommand(onePlayerCommand);
+				rdbtnPlayer.setSelected(true);
+				rdbtnPlayer.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						player1 = new Player(true, PieceColor.WHITE);
+						player2 = new Player(false, PieceColor.BLACK);
+					}
+				});
+				buttonGroup.add(rdbtnPlayer);
+				contentPanel.add(rdbtnPlayer, "2, 10");
+			}
+			{
+				JSeparator separator = new JSeparator();
+				separator.setOrientation(SwingConstants.VERTICAL);
+				contentPanel.add(separator, "8, 1, 1, 12");
+			}
+			{
+				JLabel lblRows = new JLabel("# Rows");
+				contentPanel.add(lblRows, "14, 10");
+			}
+			{
+				JRadioButton rdbtnNoPlayers = new JRadioButton("No Players, 2 AIs");
+				rdbtnNoPlayers.setActionCommand(noPlayerCommand);
+				rdbtnNoPlayers.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						System.out.println("no players");
+						player1 = new Player(false, PieceColor.WHITE);
+						player2 = new Player(false, PieceColor.BLACK);
+					}
+				});
+				buttonGroup.add(rdbtnNoPlayers);
+				contentPanel.add(rdbtnNoPlayers, "2, 12");
+			}
+			{
+				textField_1 = new JTextField();
+				contentPanel.add(textField_1, "14, 12, fill, default");
+				textField_1.setColumns(10);
+			}
+			{
+				JPanel buttonPane = new JPanel();
+				buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				getContentPane().add(buttonPane, BorderLayout.SOUTH);
+				{
+					JButton okButton = new JButton("OK");
+					okButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							myBoard.newGame(ROWS, COLS, player1, player2);
+							myBoard.repaint();
+							dispose();
+						}
+					});
+					okButton.setActionCommand("OK");
+					buttonPane.add(okButton);
+					getRootPane().setDefaultButton(okButton);
+				}
+				{
+					JButton cancelButton = new JButton("Cancel");
+					cancelButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							dispose();
+						}
+					});
+					cancelButton.setActionCommand("Cancel");
+					buttonPane.add(cancelButton);
+				}
+			}
+			COLS = 9;
+			ROWS = 5;
+		}
 	}
 }
 

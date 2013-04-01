@@ -143,6 +143,145 @@ public class Board extends JPanel {
 		boardState = GameState.Init;
 		updateState();
 	}
+	
+	public void newGame(int _ROWS, int _COLS, Player _player1, Player _player2){
+		/* initialize game state here; create pieces,
+		 * populate board, make players, get everything setup
+		 */
+		addMouseListener(new BoardAdapter());
+		int xPos = 50;
+		int yPos = 50;
+		ROWS = _ROWS;
+		COLS = _COLS;
+		
+		player1 = new Player(_player1.isUser(), _player1.whichColor());
+		player2 = new Player(_player2.isUser(), _player2.whichColor());
+		
+		piecePositions = new Position[COLS][ROWS];	
+		
+		for(int y=0; y<ROWS; y++) {
+			for(int x=0; x<COLS; x++){
+				piecePositions[x][y] = new Position(xPos, yPos);
+				xPos += 75;
+			}
+			xPos = 50;
+			yPos += 75;
+		}
+		
+		/*
+		int count=0;
+		for(int i=0; i<ROWS; i++)
+			for(int j=0; j<COLS; j++){
+				System.out.print(piecePositions[j][i].x + ", ");
+				System.out.print(piecePositions[j][i].y + "\n");
+				count++;
+			}
+		System.out.print(count + "\n");
+		*/
+		
+		pieces = new GamePiece[COLS][ROWS]; // total of 44 pieces & 45 spaces to move
+		
+		// top 2 rows - black
+		for(int y=0; y < ROWS/2; y++){
+			 for(int x=0; x < COLS; x++) {
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
+			 	pieces[x][y] = tempPiece;
+			 }
+		 }
+		
+		// middle row - black
+		for(int x=0; x < COLS; x+=2) {
+			int y = ROWS/2;
+			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
+		 	pieces[x][y] = tempPiece;
+		}
+		for(int x=COLS/2+1; x < COLS; x+=2) {
+			int y = ROWS/2;
+			if(ROWS==3 && x==ROWS-1) {
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+			 	pieces[x][y] = tempPiece;
+			}
+			else {
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.BLACK);
+			 	pieces[x][y] = tempPiece;	
+			}
+		}
+		
+		// middle row - white
+		for(int x=1; x < COLS/2+1; x+=2) {
+			int y = ROWS/2;
+			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+		 	pieces[x][y] = tempPiece;
+		}
+		for(int x=COLS/2+2; x < COLS; x+=2) {
+			int y = ROWS/2;
+			GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+		 	pieces[x][y] = tempPiece;
+		}
+
+		// bottom 2 rows
+		for(int y=ROWS/2+1; y < ROWS; y++){
+			for(int x=0; x < COLS; x++){
+				GamePiece tempPiece = new GamePiece(piecePositions[x][y], PieceColor.WHITE);
+			 	pieces[x][y] = tempPiece;
+			 }
+		 }
+		 pieces[COLS/2][ROWS/2] = new GamePiece(piecePositions[COLS/2][ROWS/2],PieceColor.NULL);
+		 
+		pieceBoardThere = new boolean[COLS][ROWS];
+
+		for (int i = 0; i < pieceBoardThere.length; i++)
+			{
+			    Arrays.fill( pieceBoardThere[i], true );
+			}
+		pieceBoardThere[COLS/2][ROWS/2] = false;
+
+		// initialize directions that are available for each position
+		/*
+		piecePositions[x][y].N=true;
+		piecePositions[x][y].NE=true;
+		piecePositions[x][y].E=true;
+		piecePositions[x][y].SE=true;
+		piecePositions[x][y].S=true;
+		piecePositions[x][y].SW=true;
+		piecePositions[x][y].W=true;
+		piecePositions[x][y].NW=true;
+		
+		
+		for(int y=1; y < ROWS; y++) {
+			for(int x=0; x < COLS; x++) {
+				if(COLS % 2==0 && ROWS % 2==0 && COLS != 0 && COLS != 8) {	// even
+					piecePositions[x][y].N=true;
+					piecePositions[x][y].NE=true;
+					piecePositions[x][y].E=true;
+					piecePositions[x][y].SE=true;
+					piecePositions[x][y].S=true;
+					piecePositions[x][y].SW=true;
+					piecePositions[x][y].W=true;
+					piecePositions[x][y].NW=true;
+				}
+				else if(COLS % 2==1 && ROWS % 2==1 && COLS != 0 && COLS != 8) {	// odd
+					piecePositions[x][y].N=true;
+					piecePositions[x][y].NE=true;
+					piecePositions[x][y].E=true;
+					piecePositions[x][y].SE=true;
+					piecePositions[x][y].S=true;
+					piecePositions[x][y].SW=true;
+					piecePositions[x][y].W=true;
+					piecePositions[x][y].NW=true;
+				}
+				else if(COLS == 0) {	// cols 0
+
+				}
+				else {	// cols 8
+
+				}				
+			}
+		}
+		*/
+		boardState = GameState.Init;
+		updateState();
+	}
 
 	// still not done has working checking blocked in and if opposite color is within 2 squaures
 	private boolean isMoveValid(int column, int row){
