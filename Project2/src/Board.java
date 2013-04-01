@@ -160,56 +160,101 @@ public class Board extends JPanel {
 		    Arrays.fill( clearPath[i], false );
 		}
 		
-		if(row == ROWS-1 && column == COLS-1){
-			attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1];
-			attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
-		}
-		
-		else if(row == ROWS-1 && column == 0){
-			 attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-			 attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
-		}
-		
-		else if(row == 0 && column == COLS-1){
-			attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
-			attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1];
-		}
-		
-		else if(row == 0 && column == 0){
-			attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
-			attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
-		}
-		
-		else if(row == ROWS-1){
-			attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-			attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
-		}
-		else if(row == 0){
-			attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
-			attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];			 
-		}
-		else if(column == 0){
-			attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-			attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
-			attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
-		}
-		else if(column == COLS-1){
-			attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1];
-			attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
-			attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1]; 
+		if((row%2==0 && column%2==0) || !(row%2==0 || column%2==0)){
+			if(row == ROWS-1 && column == COLS-1){
+				attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1];
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
+			}
+			
+			else if(row == ROWS-1 && column == 0){
+				 attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
+				 attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
+			}
+			
+			else if(row == 0 && column == COLS-1){
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
+				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1];
+			}
+			
+			else if(row == 0 && column == 0){
+				attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
+				attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
+			}
+			
+			else if(row == ROWS-1){
+				attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
+			}
+			else if(row == 0){
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
+				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];			 
+			}
+			else if(column == 0){
+				attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
+				attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
+				attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
+			}
+			else if(column == COLS-1){
+				attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1];
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
+				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1]; 
+			}
+			else{
+				attackGridThere[1][1] = pieceBoardThere[column-1][row-1];
+				attackGridThere[2][1] = pieceBoardThere[column][row-1]; 
+				attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; 
+				attackGridThere[2][2] = pieceBoardThere[column][row]; 
+				attackGridThere[3][2] = pieceBoardThere[column+1][row];
+				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; 
+				attackGridThere[2][3] = pieceBoardThere[column][row+1];
+				attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
+			}
 		}
 		else{
-			attackGridThere[1][1] = pieceBoardThere[column-1][row-1];
-			attackGridThere[2][1] = pieceBoardThere[column][row-1]; 
-			attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-			attackGridThere[1][2] = pieceBoardThere[column-1][row]; 
-			attackGridThere[2][2] = pieceBoardThere[column][row]; 
-			attackGridThere[3][2] = pieceBoardThere[column+1][row];
-			attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; 
-			attackGridThere[2][3] = pieceBoardThere[column][row+1];
-			attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
+			if(row == ROWS-1){
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
+				attackGridThere[2][1] = pieceBoardThere[column][row-1];
+			}
+			else if(row == 0){
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
+				attackGridThere[2][3] = pieceBoardThere[column][row+1]; 
+			}
+			else if(column == 0){
+				attackGridThere[2][1] = pieceBoardThere[column][row-1];
+				attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
+				attackGridThere[2][3] = pieceBoardThere[column][row+1];
+			}
+			else if(column == COLS-1){
+				attackGridThere[2][1] = pieceBoardThere[column][row-1];
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
+				attackGridThere[2][3] = pieceBoardThere[column][row+1]; 
+			}
+			else{
+				attackGridThere[2][1] = pieceBoardThere[column][row-1];
+				attackGridThere[1][2] = pieceBoardThere[column-1][row]; 
+				attackGridThere[2][2] = pieceBoardThere[column][row];
+				attackGridThere[2][3] = pieceBoardThere[column][row+1];
+				attackGridThere[3][2] = pieceBoardThere[column+1][row];
+			}	
 		}
-
+		
+		/*
+		//System.out.printf("xMax: %d\nyMax: %d\n",xMax,yMax);
+		System.out.printf("column: %d \n ",column);
+		System.out.printf("row: %d \n ",row);
+		System.out.printf("if row and column even or odd: %b \n ",(row%2==0 && column%2==0) || !(row%2==0 || column%2==0));
+		
+		System.out.printf("AttackGrid 12: %b \n ",attackGridThere[1][2]);
+		System.out.printf("AttackGrid 22: %b \n",attackGridThere[2][2]);
+		System.out.printf("AttackGrid 23: %b \n",attackGridThere[2][3]);
+		System.out.printf("AttackGrid 13: %b \n ",attackGridThere[1][3]);
+		
+		System.out.print("AG:\n ");
+		System.out.printf("|%b | %b | %b |\n ",attackGridThere[1][1],attackGridThere[2][1],attackGridThere[3][1]);
+		System.out.printf("|%b | %b | %b |\n ",attackGridThere[1][2],attackGridThere[2][2],attackGridThere[3][2]);
+		System.out.printf("|%b | %b | %b |\n ",attackGridThere[1][3],attackGridThere[2][3],attackGridThere[3][3]);
+		*/
 		for(int i=1;i<4; i++){
 			for(int j=1;j<4;j++){
 				if(attackGridThere[j][i] == false){
@@ -224,7 +269,12 @@ public class Board extends JPanel {
 				}
 			}
 		}
-
+		/*
+		System.out.print("clearPath:\n ");
+		System.out.printf("|%b | %b | %b |\n ",clearPath[0][0],clearPath[1][0],clearPath[2][0]);
+		System.out.printf("|%b | %b | %b |\n ",clearPath[0][1],clearPath[1][1],clearPath[2][1]);
+		System.out.printf("|%b | %b | %b |\n ",clearPath[0][2],clearPath[1][2],clearPath[2][2]);
+		*/
 		return valid;
 		
 			
@@ -284,11 +334,13 @@ public class Board extends JPanel {
 				pieces[pieceSelectedCol][pieceSelectedRow].setColor(PieceColor.NULL);
 				pieces[x][y].setColor(PieceColor.BLACK);
 				pieceBoardThere[pieceSelectedCol][pieceSelectedRow] = false;
+				pieceBoardThere[x][y] = true;
 			}
 			else if(pieces[pieceSelectedCol][pieceSelectedRow].getColor() == PieceColor.WHITE){
 				pieces[pieceSelectedCol][pieceSelectedRow].setColor(PieceColor.NULL);
 				pieces[x][y].setColor(PieceColor.WHITE);
 				pieceBoardThere[pieceSelectedCol][pieceSelectedRow] = false;
+				pieceBoardThere[x][y] = true;
 			}
 			updateState();
 		}
