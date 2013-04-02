@@ -97,49 +97,6 @@ public class Board extends JPanel {
 			}
 		pieceBoardThere[COLS/2][ROWS/2] = false;
 
-		// initialize directions that are available for each position
-		/*
-		piecePositions[x][y].N=true;
-		piecePositions[x][y].NE=true;
-		piecePositions[x][y].E=true;
-		piecePositions[x][y].SE=true;
-		piecePositions[x][y].S=true;
-		piecePositions[x][y].SW=true;
-		piecePositions[x][y].W=true;
-		piecePositions[x][y].NW=true;
-		
-		
-		for(int y=1; y < ROWS; y++) {
-			for(int x=0; x < COLS; x++) {
-				if(COLS % 2==0 && ROWS % 2==0 && COLS != 0 && COLS != 8) {	// even
-					piecePositions[x][y].N=true;
-					piecePositions[x][y].NE=true;
-					piecePositions[x][y].E=true;
-					piecePositions[x][y].SE=true;
-					piecePositions[x][y].S=true;
-					piecePositions[x][y].SW=true;
-					piecePositions[x][y].W=true;
-					piecePositions[x][y].NW=true;
-				}
-				else if(COLS % 2==1 && ROWS % 2==1 && COLS != 0 && COLS != 8) {	// odd
-					piecePositions[x][y].N=true;
-					piecePositions[x][y].NE=true;
-					piecePositions[x][y].E=true;
-					piecePositions[x][y].SE=true;
-					piecePositions[x][y].S=true;
-					piecePositions[x][y].SW=true;
-					piecePositions[x][y].W=true;
-					piecePositions[x][y].NW=true;
-				}
-				else if(COLS == 0) {	// cols 0
-
-				}
-				else {	// cols 8
-
-				}				
-			}
-		}
-		*/
 		boardState = GameState.Init;
 		turnCounter = 0;
 		updateState();
@@ -238,49 +195,6 @@ public class Board extends JPanel {
 			}
 		pieceBoardThere[COLS/2][ROWS/2] = false;
 
-		// initialize directions that are available for each position
-		/*
-		piecePositions[x][y].N=true;
-		piecePositions[x][y].NE=true;
-		piecePositions[x][y].E=true;
-		piecePositions[x][y].SE=true;
-		piecePositions[x][y].S=true;
-		piecePositions[x][y].SW=true;
-		piecePositions[x][y].W=true;
-		piecePositions[x][y].NW=true;
-		
-		
-		for(int y=1; y < ROWS; y++) {
-			for(int x=0; x < COLS; x++) {
-				if(COLS % 2==0 && ROWS % 2==0 && COLS != 0 && COLS != 8) {	// even
-					piecePositions[x][y].N=true;
-					piecePositions[x][y].NE=true;
-					piecePositions[x][y].E=true;
-					piecePositions[x][y].SE=true;
-					piecePositions[x][y].S=true;
-					piecePositions[x][y].SW=true;
-					piecePositions[x][y].W=true;
-					piecePositions[x][y].NW=true;
-				}
-				else if(COLS % 2==1 && ROWS % 2==1 && COLS != 0 && COLS != 8) {	// odd
-					piecePositions[x][y].N=true;
-					piecePositions[x][y].NE=true;
-					piecePositions[x][y].E=true;
-					piecePositions[x][y].SE=true;
-					piecePositions[x][y].S=true;
-					piecePositions[x][y].SW=true;
-					piecePositions[x][y].W=true;
-					piecePositions[x][y].NW=true;
-				}
-				else if(COLS == 0) {	// cols 0
-
-				}
-				else {	// cols 8
-
-				}				
-			}
-		}
-		*/
 		boardState = GameState.Init;
 		turnCounter = 0;
 		updateState();
@@ -533,13 +447,68 @@ public class Board extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(3));
 		
-		/*
 		// draw from center piece
+		/*
 		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x+75,pieces[COLS/2][ROWS/2].getPosition().y+75 );
 		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x+75,pieces[COLS/2][ROWS/2].getPosition().y-75 );
 		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2].getPosition().y+75 );
 		g.drawLine(pieces[COLS/2][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2].getPosition().y, pieces[COLS/2][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2].getPosition().y-75 );
 		*/
+		
+		/*
+		for(int x=0; x<=COLS/2; x+=2){
+			for(int y=0; y<=ROWS/2; y+=2){
+				if(x==COLS/2){
+					g.drawLine(pieces[COLS/2+x][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2+y].getPosition().y, pieces[COLS/2+x][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2+y].getPosition().y+75 );
+					g.drawLine(pieces[COLS/2+x][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2+y].getPosition().y, pieces[COLS/2+x][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2+y].getPosition().y-75 );
+				}
+				else {
+					g.drawLine(pieces[COLS/2+x][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2+y].getPosition().y, pieces[COLS/2+x][ROWS/2].getPosition().x+75,pieces[COLS/2][ROWS/2+y].getPosition().y+75 );
+					g.drawLine(pieces[COLS/2+x][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2+y].getPosition().y, pieces[COLS/2+x][ROWS/2].getPosition().x+75,pieces[COLS/2][ROWS/2+y].getPosition().y-75 );
+					g.drawLine(pieces[COLS/2+x][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2+y].getPosition().y, pieces[COLS/2+x][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2+y].getPosition().y+75 );
+					g.drawLine(pieces[COLS/2+x][ROWS/2].getPosition().x,pieces[COLS/2][ROWS/2+y].getPosition().y, pieces[COLS/2+x][ROWS/2].getPosition().x-75,pieces[COLS/2][ROWS/2+y].getPosition().y-75 );
+				}
+			}
+		}*/
+		
+		/*
+		// top left
+		for(int x=pieces[COLS/2][ROWS/2].getPosition().x; x>pieces[0][0].getPosition().x; x-=150){
+			for(int y=pieces[COLS/2][ROWS/2].getPosition().y; y>pieces[0][0].getPosition().y; y-=150){
+				g.drawLine(x,y, x+75,y+75 );
+				g.drawLine(x,y, x+75,y-75 );
+				g.drawLine(x,y, x-75,y+75 );
+				g.drawLine(x,y, x-75,y-75 );
+			}
+		}		
+		// top right
+		for(int x=pieces[COLS/2][ROWS/2].getPosition().x; x<pieces[COLS-1][ROWS-1].getPosition().x; x+=150){
+			for(int y=pieces[COLS/2][ROWS/2].getPosition().y; y>pieces[0][0].getPosition().y; y-=150){
+				g.drawLine(x,y, x+75,y+75 );
+				g.drawLine(x,y, x+75,y-75 );
+				g.drawLine(x,y, x-75,y+75 );
+				g.drawLine(x,y, x-75,y-75 );
+			}
+		}	
+		// bottom right
+		for(int x=pieces[COLS/2][ROWS/2].getPosition().x; x<pieces[COLS-1][ROWS-1].getPosition().x; x+=150){
+			for(int y=pieces[COLS/2][ROWS/2].getPosition().y; y<pieces[COLS-1][ROWS-1].getPosition().y; y+=150){
+				g.drawLine(x,y, x+75,y+75 );
+				g.drawLine(x,y, x+75,y-75 );
+				g.drawLine(x,y, x-75,y+75 );
+				g.drawLine(x,y, x-75,y-75 );
+			}
+		}
+		// bottom left
+		for(int x=pieces[COLS/2][ROWS/2].getPosition().x; x>pieces[0][0].getPosition().x; x-=150){
+			for(int y=pieces[COLS/2][ROWS/2].getPosition().y; y<pieces[COLS-1][ROWS-1].getPosition().y; y+=150){
+				g.drawLine(x,y, x+75,y+75 );
+				g.drawLine(x,y, x+75,y-75 );
+				g.drawLine(x,y, x-75,y+75 );
+				g.drawLine(x,y, x-75,y-75 );
+			}
+		}*/
+		
 		
 		g.drawLine(50,200,200,50);
 		g.drawLine(50,350,350,50);
@@ -552,7 +521,7 @@ public class Board extends JPanel {
 		g.drawLine(500,350,200,50);
 		g.drawLine(350,350,50,50);
 		g.drawLine(200,350,50,200);
-		
+			
 		
 		// draw pieces
 		for(int y=0; y<ROWS; y++) {
