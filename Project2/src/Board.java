@@ -156,6 +156,7 @@ public class Board extends JPanel {
 		
 		player1 = new Player(_player1.isUser(), _player1.whichColor());
 		player2 = new Player(_player2.isUser(), _player2.whichColor());
+		System.out.println(player2.isUser());
 		
 		piecePositions = new Position[COLS][ROWS];	
 		
@@ -578,11 +579,9 @@ public class Board extends JPanel {
 			int mouseY = me.getY();
 			int mouseCol = -1;
 			int mouseRow = -1;
-			System.out.printf("Mouse x: %d\nMouse y: %d\n",mouseX, mouseY);
 			
 			for (int i = 0; i < piecePositions.length; i++){
 				if(mouseX > (piecePositions[i][0].x - 25) && mouseX < (piecePositions[i][0].x + 25)){
-					System.out.print("Checking mouse position\n");
 					mouseCol = i;
 				}
 			}
@@ -591,18 +590,18 @@ public class Board extends JPanel {
 					mouseRow = i;
 				}
 			}
-			System.out.printf("Column Clicked: %d\nRow Clicked: %d\n", mouseCol, mouseRow);
+			//System.out.printf("Column Clicked: %d\nRow Clicked: %d\n", mouseCol, mouseRow);
 			//Handle piece selection
 			switch(boardState){
 			case P1_Turn:
 				if(mouseCol > -1 && mouseRow > -1 && player1.isUser()){
-					//Print to console for debugging purposes
+					/*//Print to console for debugging purposes
 					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
 						System.out.println("Nothing to see here!");
 					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
 						System.out.println("White piece clicked!");
 					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
-						System.out.println("Black piece clicked!");
+						System.out.println("Black piece clicked!");*/
 				//Start cases for selecting a piece
 					//No piece selected, pick the piece that was clicked if it belongs to player
 					if(pieceSelectedCol == -1 && pieceSelectedRow == -1){
@@ -631,12 +630,12 @@ public class Board extends JPanel {
 			case P2_Turn:
 				if(mouseCol > -1 && mouseRow > -1 && player2.isUser()){
 					//Print to console for debugging purposes
-					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
+					/*if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL)
 						System.out.println("Nothing to see here!");
 					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.WHITE)
 						System.out.println("White piece clicked!");
 					if(pieces[mouseCol][mouseRow].getColor() == PieceColor.BLACK)
-						System.out.println("Black piece clicked!");
+						System.out.println("Black piece clicked!");*/
 				//Start cases for selecting a piece
 					//No piece selected, pick the piece that was clicked if it belongs to player
 					if(pieceSelectedCol == -1 && pieceSelectedRow == -1){
@@ -659,24 +658,84 @@ public class Board extends JPanel {
 					else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL){
 						movePiece(pieces[pieceSelectedCol][pieceSelectedRow],mouseCol, mouseRow);
 						pieceSelectedCol = -1;
-						pieceSelectedRow = -1;//De-select space no matter what happens
+						pieceSelectedRow = -1;//Deselect space no matter what happens
 					}
 				}
+				break;
+			case Tie:
+				break;
 			}
 			repaint();
 		}
+	}
+	
+	private void doAIMove(Player ai){
+		System.out.println("Doing an AI Move");
+		boolean hasMoved = false;
+		Random rn = new Random();
+		int tries = 0;
+		while(!hasMoved && tries < 1000){
+			int aiPieceCol = rn.nextInt(COLS);
+			int aiPieceRow = rn.nextInt(ROWS);
+			if(pieces[aiPieceCol][aiPieceRow].getColor() != ai.whichColor()){
+				tries++;
+				continue;
+			}
+			if(!isMoveValid(aiPieceCol, aiPieceRow)){
+				tries++;
+				continue;
+			}
+			pieceSelectedCol = aiPieceCol;
+			pieceSelectedRow = aiPieceRow;
+			while(!hasMoved && tries < 1000){
+				int moveToCol = rn.nextInt(COLS);
+				int moveToRow = rn.nextInt(ROWS);
+				if (pieces[moveToCol][moveToRow].getColor() != PieceColor.NULL)
+					continue;
+				movePiece(pieces[pieceSelectedCol][pieceSelectedRow], moveToCol, moveToRow);
+				if(pieces[aiPieceCol][aiPieceRow].getColor() == PieceColor.NULL)
+					hasMoved = true;
+				tries++;
+			}
+		}
+		if(tries >= 1000 && !hasMoved) updateState();
+		pieceSelectedCol = -1;
+		pieceSelectedRow = -1;
+		repaint();
 	}
 	
 	private void updateState(){
 		switch (boardState){
 		case Init:
 			boardState = GameState.P1_Turn;
+			if(!(player1.isUser())) doAIMove(player1);
 			break;
 		case P1_Turn:
+			if(turnCounter >= 5){
+				boardState = GameState.Tie;
+				updateState();
+				break;
+			}
 			boardState = GameState.P2_Turn;
+			System.out.println("Player 2 turn");
+			if(!(player2.isUser())){
+				doAIMove(player2);
+			}
 			break;
 		case P2_Turn:
+			if(turnCounter >= 5){
+				boardState = GameState.Tie;
+				updateState();
+				break;
+			}
 			boardState = GameState.P1_Turn;
+			System.out.println("PLayer 1 turn");
+			if(!(player1.isUser())){
+				doAIMove(player1);
+			}
+			break;
+		case Tie:
+			JOptionPane.showMessageDialog(this, "Game tied, Please Start a new game");
 			break;
 		}
 		turnCounter++;
@@ -686,7 +745,7 @@ public class Board extends JPanel {
 	private boolean[][] pieceBoardThere;
 	private boolean[][] clearPath = new boolean[3][3];
 	private boolean attacksAvailable;
-	private boolean hasMoved;
+	//private boolean hasMoved;
 	private Player player1;
 	private Player player2;
 	private Position[][] piecePositions;
