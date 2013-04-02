@@ -141,6 +141,7 @@ public class Board extends JPanel {
 		}
 		*/
 		boardState = GameState.Init;
+		turnCounter = 0;
 		updateState();
 	}
 	
@@ -281,6 +282,7 @@ public class Board extends JPanel {
 		}
 		*/
 		boardState = GameState.Init;
+		turnCounter = 0;
 		updateState();
 	}
 
@@ -698,7 +700,7 @@ public class Board extends JPanel {
 				tries++;
 			}
 		}
-		if(tries >= 1000 && !hasMoved) updateState();
+		if(tries >= 1000 && !hasMoved) return;
 		pieceSelectedCol = -1;
 		pieceSelectedRow = -1;
 		repaint();
