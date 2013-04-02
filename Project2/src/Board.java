@@ -100,6 +100,11 @@ public class Board extends JPanel {
 		boardState = GameState.Init;
 		turnCounter = 0;
 		updateState();
+		
+		for (int i = 0; i < 5; i++)
+		{
+		    Arrays.fill( attackGridThere[i], true );
+		}
 	}
 	
 	public void newGame(int _ROWS, int _COLS, Player _player1, Player _player2){
@@ -204,12 +209,6 @@ public class Board extends JPanel {
 	private boolean isMoveValid(int column, int row){
 		//the valid move checker
 		boolean valid = false;
-		boolean[][] attackGridThere = new boolean[5][5];
-
-		for (int i = 0; i < 5; i++)
-		{
-		    Arrays.fill( attackGridThere[i], true );
-		}
 		
 		for (int i = 0; i < 3; i++)
 		{
@@ -335,40 +334,86 @@ public class Board extends JPanel {
 		
 			
 	}
+	
 	private boolean isAttackValid(int column, int row){
-		boolean[][] attackGridThere = new boolean[5][5];
 		PieceColor[][] attackGridColor = new PieceColor[5][5];
 		
 		for (int i = 0; i < 5; i++)
 		{
 		    Arrays.fill( attackGridColor[i], PieceColor.NULL );
 		}
-		
+		/*
+		System.out.printf("|Column=%d | Row=%d | \n",column,row);
+		System.out.print("clearPath:\n ");
+		System.out.printf("|%b | %b | %b |\n ",clearPath[0][0],clearPath[1][0],clearPath[2][0]);
+		System.out.printf("|%b | %b | %b |\n ",clearPath[0][1],clearPath[1][1],clearPath[2][1]);
+		System.out.printf("|%b | %b | %b |\n ",clearPath[0][2],clearPath[1][2],clearPath[2][2]);
+		*/
 			//fill 00,02,04,20,24,40,42,44
-			for(int i=0;i<3;i=i++){
-				for(int j=0;j<3;j=j++){
-					if(clearPath[i][j] == true)
+			for(int i=0;i<3;i++){
+				for(int j=0;j<3;j++){
+					//System.out.printf("|Column=%d | Row=%d | \n",i,j);
+					//System.out.printf("|clearPath=%b | \n",clearPath[i][j]);
+					if(clearPath[i][j] == true){
+					//	System.out.printf("|Column=%d | Row=%d | \n",column+((i*2)-2),row+((j*2)-2));
+					//	System.out.printf("|attackGRid=%b | pieceBoard=%b | \n",attackGridThere[2*i][2*j],pieceBoardThere[5][3]);
 					attackGridThere[2*i][2*j] = pieceBoardThere[column+((i*2)-2)][row+((j*2)-2)];
 					attackGridColor[2*i][2*j] = pieces[column+((i*2)-2)][row+((j*2)-2)].getColor();
+					/*
+					System.out.print("---------------COLOR--------------\n");
+					System.out.printf("|attackGRidCOLOR=%s | pieceBoard=%s | \n",attackGridColor[2*i][2*j],pieces[column+((i*2)-2)][row+((j*2)-2)].getColor());
+					System.out.print("-----------------------------\n");
+					System.out.printf("|%d | %d | %d | %d | \n ",2*i,2*j,row+((i*2)-2),column+((j*2)-2));
+					*/
+					}
 				}
 			}
+/*
+			System.out.print("attackGridColor:\n");
+			for(int i=0;i<5;i++){
+				for(int j=0;j<5;j++){
+			System.out.printf("|%d%d %s |",j,i,attackGridColor[j][i]);
+				}
+				System.out.print("\n");
+			}
+		
+	  System.out.print("clearPath:\n");
+			for(int i=0;i<3;i++){
+				for(int j=0;j<3;j++){
+			System.out.printf("|%d%d %s |",j,i,clearPath[j][i]);
+				}
+				System.out.print("\n");
+			}
 			
+			System.out.print("pieces:\n");
+			for(int i=0;i<5;i++){
+				for(int j=0;j<9;j++){
+			System.out.printf("|%d%d %s |",j,i,pieces[j][i].getColor());
+				}
+				System.out.print("\n");
+			}
+			
+			System.out.printf("|%d%d %s |\n",column,row,pieces[column][row].getColor());
+			*/
+			outerloop:
 			for(int i=0;i<5;i=i+2){
 				for(int j=0;j<5;j=j+2){
 					if(attackGridColor[i][j] ==  PieceColor.NULL){
 						attacksAvailable = false;
 					}
 					else if(attackGridColor[i][j] ==  PieceColor.BLACK){
-						if(pieces[column][row].getColor() == PieceColor.BLACK ){
-							attacksAvailable = false;
+						if(pieces[column][row].getColor() == PieceColor.WHITE ){
+							attacksAvailable = true;
+							break outerloop;
 						}
-						else{
-							return true;
+						else {
+							attacksAvailable = false;
 						}
 					}
 					else{
 						if(pieces[column][row].getColor() == PieceColor.WHITE ){
-							return true;
+							attacksAvailable = true;
+							break outerloop;
 						}
 						else{
 							attacksAvailable = false;
@@ -377,13 +422,50 @@ public class Board extends JPanel {
 				}
 
 		}
-	
 		return attacksAvailable;
 	}
 	
 	public void movePiece(GamePiece piece, int x, int y){
+		boolean[][] vaildMoves = new boolean[COLS][ROWS];
+		boolean[][] vaildAttackMoves = new boolean[COLS][ROWS];
 		
-		if(isMoveValid(pieceSelectedCol,pieceSelectedRow)/* &&  isAttackValid(pieceSelectedCol,pieceSelectedRow)*/){
+		for (int i = 0; i < COLS; i++)
+		{
+		    Arrays.fill( vaildMoves[i], false );
+		}
+	
+		for(int i=0;i<5;i++){
+			for(int j=0;j<9;j++){
+				if(isMoveValid(j,i)){
+					if(isAttackValid(j,i)){
+						vaildAttackMoves[j][i] = pieceBoardThere[j][i];
+					}
+					else
+						vaildMoves[j][i] = pieceBoardThere[j][i];
+
+				}	
+			}
+		}
+		
+		System.out.print("vaildMoves:\n");
+		for(int i=0;i<5;i++){
+			for(int j=0;j<9;j++){
+		System.out.printf("|%d%d %b |",j,i,vaildMoves[j][i]);
+			}
+			System.out.print("\n");
+		}
+		
+		System.out.print("vaildAttackMoves:\n");
+		for(int i=0;i<5;i++){
+			for(int j=0;j<9;j++){
+		System.out.printf("|%d%d %b |",j,i,vaildAttackMoves[j][i]);
+			}
+			System.out.print("\n");
+		}
+		
+		System.out.printf("|pieceBoardThere=%b | vaildMoves=%b | \n",pieceBoardThere[pieceSelectedCol][pieceSelectedRow],vaildMoves[pieceSelectedCol][pieceSelectedRow]);
+		
+		if(pieceBoardThere[pieceSelectedCol][pieceSelectedRow] == vaildAttackMoves[pieceSelectedCol][pieceSelectedRow]){
 			//add move to possible attack moves
 			
 			if(pieces[pieceSelectedCol][pieceSelectedRow].getColor() == PieceColor.BLACK){
@@ -400,8 +482,9 @@ public class Board extends JPanel {
 			}
 			updateState();
 		}
-		else if (isMoveValid(pieceSelectedCol,pieceSelectedRow) && !(isAttackValid(pieceSelectedCol,pieceSelectedRow))){
+		else if (pieceBoardThere[pieceSelectedCol][pieceSelectedRow] == false){
 			//add move to possible moves
+			System.out.print("false \n ");
 		}
 		/*
 		if(pieces[pieceSelectedCol][pieceSelectedRow].getColor() == PieceColor.BLACK){
@@ -712,6 +795,7 @@ public class Board extends JPanel {
 	
 	private GamePiece[][] pieces;
 	private boolean[][] pieceBoardThere;
+	private boolean[][] attackGridThere = new boolean[5][5];
 	private boolean[][] clearPath = new boolean[3][3];
 	private boolean attacksAvailable;
 	//private boolean hasMoved;
