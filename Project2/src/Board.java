@@ -669,7 +669,7 @@ public class Board extends JPanel {
 				tries++;
 			}
 		}
-		if(tries >= 1000 && !hasMoved) return;
+		if(tries >= 1000 && !hasMoved) updateState();
 		pieceSelectedCol = -1;
 		pieceSelectedRow = -1;
 		repaint();
@@ -682,7 +682,7 @@ public class Board extends JPanel {
 			if(!(player1.isUser())) doAIMove(player1);
 			break;
 		case P1_Turn:
-			if(turnCounter >= 5){
+			if(turnCounter >= 50){
 				boardState = GameState.Tie;
 				updateState();
 				break;
@@ -694,7 +694,7 @@ public class Board extends JPanel {
 			}
 			break;
 		case P2_Turn:
-			if(turnCounter >= 5){
+			if(turnCounter >= 50){
 				boardState = GameState.Tie;
 				updateState();
 				break;

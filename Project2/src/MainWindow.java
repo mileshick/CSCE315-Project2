@@ -59,7 +59,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		setTitle("Team 03 Project 2");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
+		//setResizable(false);
 		setBounds(100, 100, 700, 450);
 		newGame = new NewGameWindow();
 		myBoard = new Board();
@@ -128,8 +128,8 @@ public class MainWindow extends JFrame {
 		private final String twoPlayerCommand = "2";
 		private final String onePlayerCommand = "1";
 		private final String noPlayerCommand = "0";
-		private Player player1;
-		private Player player2;
+		private Player player1 = new Player(true, PieceColor.WHITE);
+		private Player player2 = new Player(false, PieceColor.BLACK);
 		private int ROWS;
 		private int COLS;
 
@@ -198,7 +198,7 @@ public class MainWindow extends JFrame {
 				contentPanel.add(rdbtnPlayersNo, "2, 8");
 			}
 			{
-				textField = new JTextField();
+				textField = new JTextField("9");
 				contentPanel.add(textField, "14, 8, fill, default");
 				textField.setColumns(10);
 			}
@@ -238,7 +238,7 @@ public class MainWindow extends JFrame {
 				contentPanel.add(rdbtnNoPlayers, "2, 12");
 			}
 			{
-				textField_1 = new JTextField();
+				textField_1 = new JTextField("5");
 				contentPanel.add(textField_1, "14, 12, fill, default");
 				textField_1.setColumns(10);
 			}
@@ -250,9 +250,19 @@ public class MainWindow extends JFrame {
 					JButton okButton = new JButton("OK");
 					okButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							myBoard.newGame(ROWS, COLS, player1, player2);
-							myBoard.repaint();
-							dispose();
+							try{
+								COLS = Integer.parseInt(textField.getText());
+								ROWS = Integer.parseInt(textField_1.getText());
+							}catch (java.lang.NumberFormatException e){
+								JOptionPane.showMessageDialog(null, "# of Rows and Columns must be an odd number between 3 and 13");
+								return;
+							}
+							if((ROWS % 2) == 1 && (COLS % 2) == 1 && ROWS >=3 && ROWS <= 13 && COLS >= 3 && COLS <=13){
+								myBoard.newGame(ROWS, COLS, player1, player2);
+								myBoard.repaint();
+								dispose();
+							}
+							else JOptionPane.showMessageDialog(null, "# of Rows and Columns must be an odd number between 3 and 13");
 						}
 					});
 					okButton.setActionCommand("OK");
