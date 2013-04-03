@@ -99,6 +99,7 @@ public class Board extends JPanel {
 
 		boardState = GameState.Init;
 		turnCounter = 0;
+		movablePieces = new ArrayList<moveContainer>();
 		updateState();
 		
 		for (int i = 0; i < 5; i++)
@@ -205,299 +206,278 @@ public class Board extends JPanel {
 		updateState();
 	}
 
-	// still not done has working checking blocked in and if opposite color is within 2 squaures
-	private boolean isMoveValid(int column, int row){
-		//the valid move checker
-		boolean valid = false;
-		
-		for (int i = 0; i < 3; i++)
-		{
-		    Arrays.fill( clearPath[i], false );
-		}
-		
-		if((row%2==0 && column%2==0) || !(row%2==0 || column%2==0)){
-			if(row == ROWS-1 && column == COLS-1){
-				attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1];
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
-			}
-			
-			else if(row == ROWS-1 && column == 0){
-				 attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-				 attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
-			}
-			
-			else if(row == 0 && column == COLS-1){
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
-				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1];
-			}
-			
-			else if(row == 0 && column == 0){
-				attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
-				attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
-			}
-			
-			else if(row == ROWS-1){
-				attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
-			}
-			else if(row == 0){
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
-				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];			 
-			}
-			else if(column == 0){
-				attackGridThere[2][1] = pieceBoardThere[column][row-1]; attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-				attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
-				attackGridThere[2][3] = pieceBoardThere[column][row+1]; attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
-			}
-			else if(column == COLS-1){
-				attackGridThere[1][1] = pieceBoardThere[column-1][row-1]; attackGridThere[2][1] = pieceBoardThere[column][row-1];
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
-				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; attackGridThere[2][3] = pieceBoardThere[column][row+1]; 
-			}
-			else{
-				attackGridThere[1][1] = pieceBoardThere[column-1][row-1];
-				attackGridThere[2][1] = pieceBoardThere[column][row-1]; 
-				attackGridThere[3][1] = pieceBoardThere[column+1][row-1];
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; 
-				attackGridThere[2][2] = pieceBoardThere[column][row]; 
-				attackGridThere[3][2] = pieceBoardThere[column+1][row];
-				attackGridThere[1][3] = pieceBoardThere[column-1][row+1]; 
-				attackGridThere[2][3] = pieceBoardThere[column][row+1];
-				attackGridThere[3][3] = pieceBoardThere[column+1][row+1];
-			}
-		}
-		else{
-			if(row == ROWS-1){
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
-				attackGridThere[2][1] = pieceBoardThere[column][row-1];
-			}
-			else if(row == 0){
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row]; 
-				attackGridThere[2][3] = pieceBoardThere[column][row+1]; 
-			}
-			else if(column == 0){
-				attackGridThere[2][1] = pieceBoardThere[column][row-1];
-				attackGridThere[2][2] = pieceBoardThere[column][row]; attackGridThere[3][2] = pieceBoardThere[column+1][row];
-				attackGridThere[2][3] = pieceBoardThere[column][row+1];
-			}
-			else if(column == COLS-1){
-				attackGridThere[2][1] = pieceBoardThere[column][row-1];
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; attackGridThere[2][2] = pieceBoardThere[column][row];
-				attackGridThere[2][3] = pieceBoardThere[column][row+1]; 
-			}
-			else{
-				attackGridThere[2][1] = pieceBoardThere[column][row-1];
-				attackGridThere[1][2] = pieceBoardThere[column-1][row]; 
-				attackGridThere[2][2] = pieceBoardThere[column][row];
-				attackGridThere[2][3] = pieceBoardThere[column][row+1];
-				attackGridThere[3][2] = pieceBoardThere[column+1][row];
-			}	
-		}
-		
-		/*
-		//System.out.printf("xMax: %d\nyMax: %d\n",xMax,yMax);
-		System.out.printf("column: %d \n ",column);
-		System.out.printf("row: %d \n ",row);
-		System.out.printf("if row and column even or odd: %b \n ",(row%2==0 && column%2==0) || !(row%2==0 || column%2==0));
-		
-		System.out.printf("AttackGrid 12: %b \n ",attackGridThere[1][2]);
-		System.out.printf("AttackGrid 22: %b \n",attackGridThere[2][2]);
-		System.out.printf("AttackGrid 23: %b \n",attackGridThere[2][3]);
-		System.out.printf("AttackGrid 13: %b \n ",attackGridThere[1][3]);
-		
-		System.out.print("AG:\n ");
-		System.out.printf("|%b | %b | %b |\n ",attackGridThere[1][1],attackGridThere[2][1],attackGridThere[3][1]);
-		System.out.printf("|%b | %b | %b |\n ",attackGridThere[1][2],attackGridThere[2][2],attackGridThere[3][2]);
-		System.out.printf("|%b | %b | %b |\n ",attackGridThere[1][3],attackGridThere[2][3],attackGridThere[3][3]);
-		*/
-		for(int i=1;i<4; i++){
-			for(int j=1;j<4;j++){
-				if(attackGridThere[j][i] == false){
-					clearPath[j-1][i-1] = !(attackGridThere[j][i]);
-				}	
-			}
-		}
-		for(int i=0;i<3; i++){
-			for(int j=0;j<3;j++){
-				if(clearPath[j][i] == true){
-					valid = true;
+	private void updateMovablePieces(){ 
+		//I'm terribly sorry for all this nesting
+		for(int column = 0; column < COLS-1; column++){
+			for(int row = 0; row < ROWS-1; row++){
+				if(row == 0 && column == 0){
+					if(pieces[column+1][row].getColor() == PieceColor.NULL && pieces[column+1][row].getPosition().E == true)
+						movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+					if(pieces[column][row+1].getColor() == PieceColor.NULL && pieces[column][row+1].getPosition().S == true)
+						movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+					if(pieces[column+1][row+1].getColor() == PieceColor.NULL && pieces[column+1][row+1].getPosition().SE == true)
+						movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row+1)));
 				}
-			}
-		}
-		/*
-		System.out.print("clearPath:\n ");
-		System.out.printf("|%b | %b | %b |\n ",clearPath[0][0],clearPath[1][0],clearPath[2][0]);
-		System.out.printf("|%b | %b | %b |\n ",clearPath[0][1],clearPath[1][1],clearPath[2][1]);
-		System.out.printf("|%b | %b | %b |\n ",clearPath[0][2],clearPath[1][2],clearPath[2][2]);
-		*/
-		return valid;
-		
-			
-	}
-	
-	private boolean isAttackValid(int column, int row){
-		PieceColor[][] attackGridColor = new PieceColor[5][5];
-		
-		for (int i = 0; i < 5; i++)
-		{
-		    Arrays.fill( attackGridColor[i], PieceColor.NULL );
-		}
-		/*
-		System.out.printf("|Column=%d | Row=%d | \n",column,row);
-		System.out.print("clearPath:\n ");
-		System.out.printf("|%b | %b | %b |\n ",clearPath[0][0],clearPath[1][0],clearPath[2][0]);
-		System.out.printf("|%b | %b | %b |\n ",clearPath[0][1],clearPath[1][1],clearPath[2][1]);
-		System.out.printf("|%b | %b | %b |\n ",clearPath[0][2],clearPath[1][2],clearPath[2][2]);
-		*/
-			//fill 00,02,04,20,24,40,42,44
-			for(int i=0;i<3;i++){
-				for(int j=0;j<3;j++){
-					//System.out.printf("|Column=%d | Row=%d | \n",i,j);
-					//System.out.printf("|clearPath=%b | \n",clearPath[i][j]);
-					if(clearPath[i][j] == true){
-					//	System.out.printf("|Column=%d | Row=%d | \n",column+((i*2)-2),row+((j*2)-2));
-					//	System.out.printf("|attackGRid=%b | pieceBoard=%b | \n",attackGridThere[2*i][2*j],pieceBoardThere[5][3]);
-					attackGridThere[2*i][2*j] = pieceBoardThere[column+((i*2)-2)][row+((j*2)-2)];
-					attackGridColor[2*i][2*j] = pieces[column+((i*2)-2)][row+((j*2)-2)].getColor();
-					/*
-					System.out.print("---------------COLOR--------------\n");
-					System.out.printf("|attackGRidCOLOR=%s | pieceBoard=%s | \n",attackGridColor[2*i][2*j],pieces[column+((i*2)-2)][row+((j*2)-2)].getColor());
-					System.out.print("-----------------------------\n");
-					System.out.printf("|%d | %d | %d | %d | \n ",2*i,2*j,row+((i*2)-2),column+((j*2)-2));
-					*/
+				else if(row == 0 && column >= 1){
+					if((column % 2) == 1){
+						if(pieces[column+1][row].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column-1][row].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+					}
+					else if ((column % 2) == 0){
+						if(pieces[column+1][row].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column+1][row+1].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row+1)));
+						if(pieces[column-1][row].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+						if(pieces[column-1][row+1].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row+1)));
 					}
 				}
-			}
-/*
-			System.out.print("attackGridColor:\n");
-			for(int i=0;i<5;i++){
-				for(int j=0;j<5;j++){
-			System.out.printf("|%d%d %s |",j,i,attackGridColor[j][i]);
-				}
-				System.out.print("\n");
-			}
-		
-	  System.out.print("clearPath:\n");
-			for(int i=0;i<3;i++){
-				for(int j=0;j<3;j++){
-			System.out.printf("|%d%d %s |",j,i,clearPath[j][i]);
-				}
-				System.out.print("\n");
-			}
-			
-			System.out.print("pieces:\n");
-			for(int i=0;i<5;i++){
-				for(int j=0;j<9;j++){
-			System.out.printf("|%d%d %s |",j,i,pieces[j][i].getColor());
-				}
-				System.out.print("\n");
-			}
-			
-			System.out.printf("|%d%d %s |\n",column,row,pieces[column][row].getColor());
-			*/
-			outerloop:
-			for(int i=0;i<5;i=i+2){
-				for(int j=0;j<5;j=j+2){
-					if(attackGridColor[i][j] ==  PieceColor.NULL){
-						attacksAvailable = false;
-					}
-					else if(attackGridColor[i][j] ==  PieceColor.BLACK){
-						if(pieces[column][row].getColor() == PieceColor.WHITE ){
-							attacksAvailable = true;
-							break outerloop;
-						}
-						else {
-							attacksAvailable = false;
-						}
+				else if(row >= 1 && column == 0){
+					if(row % 2 != 0){
+						if(pieces[column+1][row].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL)
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
 					}
 					else{
-						if(pieces[column][row].getColor() == PieceColor.WHITE ){
-							attacksAvailable = true;
-							break outerloop;
-						}
-						else{
-							attacksAvailable = false;
-						}
+						if(pieces[column+1][row].getColor() == PieceColor.NULL) //move east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL) //move south
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column+1][row+1].getColor() == PieceColor.NULL) //move south-east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row+1)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL) //move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+						if(pieces[column+1][row-1].getColor() == PieceColor.NULL) //move north-east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row-1)));
 					}
 				}
-
+				else if(row == ROWS-1){
+					if(column == 0){
+						if(pieces[column+1][row].getColor() == PieceColor.NULL)	//move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL) //move east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+						if(pieces[column+1][row-1].getColor() == PieceColor.NULL)//move north-east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row-1)));
+					}
+					else if((column % 2) == 1){
+						if(pieces[column+1][row].getColor() == PieceColor.NULL)	//move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL) //move east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+						if(pieces[column-1][row].getColor() == PieceColor.NULL) //move west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+					}
+					else if((column % 2) == 0){
+						if(pieces[column+1][row].getColor() == PieceColor.NULL)	//move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL) //move east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+						if(pieces[column-1][row].getColor() == PieceColor.NULL) //move west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+						if(pieces[column+1][row-1].getColor() == PieceColor.NULL) //move north-east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row-1)));
+						if(pieces[column-1][row-1].getColor() == PieceColor.NULL) //move north-west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row-1)));
+					}
+				}
+				else if(column == COLS-1){
+					if(row == 0){
+						if(pieces[column-1][row].getColor() == PieceColor.NULL) //move west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+						if(pieces[column-1][row+1].getColor() == PieceColor.NULL) //move south-west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row+1)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)  //move south
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+					}
+					else if ((row% 2) != 0){
+						if(pieces[column-1][row].getColor() == PieceColor.NULL) //move west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)  //move south
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL)  //move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+					}
+					else{
+						if(pieces[column-1][row].getColor() == PieceColor.NULL) //move west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)  //move south
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL)  //move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+						if(pieces[column-1][row-1].getColor() == PieceColor.NULL) //move north-west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row-1)));
+						if(pieces[column-1][row+1].getColor() == PieceColor.NULL) //move south-west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row+1)));
+					}
+				}
+				else {
+					if ((row%2==0 && column%2==0) || !(row%2==0 || column%2==0) || (row%2 == 1 && column %2 ==1)){
+						if(pieces[column+1][row].getColor() == PieceColor.NULL) //move east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)  //move south
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column+1][row+1].getColor() == PieceColor.NULL) //move south-east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row+1)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL)  //move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+						if(pieces[column+1][row-1].getColor() == PieceColor.NULL) //move north-east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row-1)));
+						if(pieces[column-1][row].getColor() == PieceColor.NULL) //move west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+						if(pieces[column-1][row+1].getColor() == PieceColor.NULL) //move south-west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row+1)));
+						if(pieces[column-1][row-1].getColor() == PieceColor.NULL) //move north-west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row-1)));
+					}
+					else {
+						if(pieces[column][row+1].getColor() == PieceColor.NULL)  //move south
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row+1)));
+						if(pieces[column][row-1].getColor() == PieceColor.NULL)  //move north
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column, row-1)));
+						if(pieces[column-1][row].getColor() == PieceColor.NULL) //move west
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column-1, row)));
+						if(pieces[column+1][row].getColor() == PieceColor.NULL) //move east
+							movablePieces.add(new moveContainer(new Position(column, row), new Position(column+1, row)));
+					}
+				}
+			}
 		}
-		return attacksAvailable;
+		updateAttackMoves();
 	}
 	
-	public void movePiece(GamePiece piece, int x, int y){
-		boolean[][] vaildMoves = new boolean[COLS][ROWS];
-		boolean[][] vaildAttackMoves = new boolean[COLS][ROWS];
-		
-		for (int i = 0; i < COLS; i++)
-		{
-		    Arrays.fill( vaildMoves[i], false );
+	public void updateAttackMoves(){
+		attackablePieces = new ArrayList<moveContainer>();
+		for(moveContainer move : movablePieces){
+			PieceColor sourceColor = pieces[move.source.x][move.source.y].getColor();
+			int deltaX = move.destination.x - move.source.x;
+			int deltaY = move.destination.y - move.source.y;
+			int nextPosX = move.destination.x + deltaX;
+			int nextPosY = move.destination.y + deltaY;
+			int prevPosX = move.source.x - deltaX;
+			int prevPosY = move.source.y - deltaY;
+			if(nextPosX < 0 || nextPosY < 0 || nextPosX > COLS-1 || nextPosY > ROWS-1) continue;
+			if(prevPosX < 0 || prevPosY < 0 || prevPosX > COLS-1 || prevPosY > ROWS-1) continue;
+			switch(sourceColor){
+			case BLACK:
+				if(pieces[nextPosX][nextPosY].getColor() == PieceColor.WHITE || pieces[prevPosX][prevPosY].getColor() == PieceColor.WHITE)
+					attackablePieces.add(move);
+				break;
+			case WHITE:
+				if(pieces[nextPosX][nextPosY].getColor() == PieceColor.BLACK || pieces[prevPosX][prevPosY].getColor() == PieceColor.BLACK)
+					attackablePieces.add(move);
+				break;
+			}
 		}
+	}
 	
-		for(int i=0;i<5;i++){
-			for(int j=0;j<9;j++){
-				if(isMoveValid(j,i)){
-					if(isAttackValid(j,i)){
-						vaildAttackMoves[j][i] = pieceBoardThere[j][i];
-					}
-					else
-						vaildMoves[j][i] = pieceBoardThere[j][i];
-
-				}	
+	public void movePiece(int sourceCol, int sourceRow, int destCol, int destRow){
+		for(moveContainer mc: attackablePieces){
+			System.out.printf("Attackable col: %d, row: %d\n", mc.source.x, mc.source.y);
+			if(mc.source.x == sourceCol && mc.source.y == sourceRow &&
+					mc.destination.x == destCol && mc.destination.y == destRow){
+				attackMove(mc);
+				break;
 			}
 		}
-		
-		System.out.print("vaildMoves:\n");
-		for(int i=0;i<5;i++){
-			for(int j=0;j<9;j++){
-		System.out.printf("|%d%d %b |",j,i,vaildMoves[j][i]);
+		if(attackablePieces.isEmpty()){
+			for(moveContainer mc: movablePieces){
+				//this is horrifying
+				//check if the move requested is in the list of valid moves
+				System.out.printf("col: %d, row: %d\n", mc.source.x, mc.source.y);
+				if(mc.source.x == sourceCol && mc.source.y == sourceRow 
+						&& mc.destination.x == destCol && mc.destination.y == destRow ){
+					System.out.println("moving a piece");
+					updatePosition(mc);
+					break;
+				}
 			}
-			System.out.print("\n");
 		}
-		
-		System.out.print("vaildAttackMoves:\n");
-		for(int i=0;i<5;i++){
-			for(int j=0;j<9;j++){
-		System.out.printf("|%d%d %b |",j,i,vaildAttackMoves[j][i]);
+	}
+	
+	public void attackMove(moveContainer move){
+		int sourceColumn = move.source.x;
+		int sourceRow = move.source.y;
+		PieceColor sourceColor = pieces[sourceColumn][sourceRow].getColor();
+		int deltaX = move.destination.x - move.source.x;
+		int deltaY = move.destination.y - move.source.y;
+		int nextPosX = move.destination.x + deltaX;
+		int nextPosY = move.destination.y + deltaY;
+		int prevPosX = move.source.x - deltaX;
+		int prevPosY = move.source.y - deltaY;
+		switch(sourceColor){
+		case BLACK:
+			pieces[move.destination.x][move.destination.y].setColor(PieceColor.BLACK);
+			pieces[move.source.x][move.source.y].setColor(PieceColor.NULL);
+			while((nextPosX >= 0 && nextPosX <= COLS-1) &&(nextPosY >= 0 && nextPosY <= ROWS-1)
+					&& pieces[nextPosX][nextPosY].getColor() != PieceColor.BLACK && pieces[nextPosX][nextPosY].getColor() != PieceColor.NULL){
+				pieces[nextPosX][nextPosY].setColor(PieceColor.NULL);
+				nextPosX = nextPosX + deltaX;
+				nextPosY = nextPosY + deltaY;
 			}
-			System.out.print("\n");
-		}
-		
-		System.out.printf("|pieceBoardThere=%b | vaildMoves=%b | \n",pieceBoardThere[pieceSelectedCol][pieceSelectedRow],vaildMoves[pieceSelectedCol][pieceSelectedRow]);
-		
-		if(pieceBoardThere[pieceSelectedCol][pieceSelectedRow] == vaildAttackMoves[pieceSelectedCol][pieceSelectedRow]){
-			//add move to possible attack moves
-			
-			if(pieces[pieceSelectedCol][pieceSelectedRow].getColor() == PieceColor.BLACK){
-				pieces[pieceSelectedCol][pieceSelectedRow].setColor(PieceColor.NULL);
-				pieces[x][y].setColor(PieceColor.BLACK);
-				pieceBoardThere[pieceSelectedCol][pieceSelectedRow] = false;
-				pieceBoardThere[x][y] = true;
+			while((prevPosX >= 0 && prevPosX <= COLS-1) &&(prevPosY >= 0 && prevPosY <= ROWS-1)
+					&& pieces[prevPosX][prevPosY].getColor() != PieceColor.BLACK && pieces[prevPosX][prevPosY].getColor() != PieceColor.NULL){
+				pieces[prevPosX][prevPosY].setColor(PieceColor.NULL);
+				prevPosX = prevPosX - deltaX;
+				prevPosY = prevPosY - deltaY;
 			}
-			else if(pieces[pieceSelectedCol][pieceSelectedRow].getColor() == PieceColor.WHITE){
-				pieces[pieceSelectedCol][pieceSelectedRow].setColor(PieceColor.NULL);
-				pieces[x][y].setColor(PieceColor.WHITE);
-				pieceBoardThere[pieceSelectedCol][pieceSelectedRow] = false;
-				pieceBoardThere[x][y] = true;
+			break;
+		case WHITE:
+			pieces[move.destination.x][move.destination.y].setColor(PieceColor.WHITE);
+			pieces[move.source.x][move.source.y].setColor(PieceColor.NULL);
+			while((nextPosX >= 0 && nextPosX <= COLS-1) &&(nextPosY >= 0 && nextPosY <= ROWS-1)
+					&& pieces[nextPosX][nextPosY].getColor() != PieceColor.WHITE && pieces[nextPosX][nextPosY].getColor() != PieceColor.NULL){
+				pieces[nextPosX][nextPosY].setColor(PieceColor.NULL);
+				nextPosX = nextPosX + deltaX;
+				nextPosY = nextPosY + deltaY;
 			}
-			updateState();
+			while((prevPosX >= 0 && prevPosX <= COLS-1) &&(prevPosY >= 0 && prevPosY <= ROWS-1)
+					&& pieces[prevPosX][prevPosY].getColor() != PieceColor.WHITE && pieces[prevPosX][prevPosY].getColor() != PieceColor.NULL){
+				pieces[prevPosX][prevPosY].setColor(PieceColor.NULL);
+				prevPosX = prevPosX - deltaX;
+				prevPosY = prevPosY - deltaY;
+			}
+			break;
+		case NULL:
+			break;
 		}
-		else if (pieceBoardThere[pieceSelectedCol][pieceSelectedRow] == false){
-			//add move to possible moves
-			System.out.print("false \n ");
-		}
-		/*
-		if(pieces[pieceSelectedCol][pieceSelectedRow].getColor() == PieceColor.BLACK){
-			pieces[pieceSelectedCol][pieceSelectedRow].setColor(PieceColor.NULL);
-			pieces[x][y].setColor(PieceColor.BLACK);
-		}
-		else if(pieces[pieceSelectedCol][pieceSelectedRow].getColor() == PieceColor.WHITE){
-			pieces[pieceSelectedCol][pieceSelectedRow].setColor(PieceColor.NULL);
-			pieces[x][y].setColor(PieceColor.WHITE);	
-		}
-		*/
 		repaint();
-		
+		movablePieces.clear();
+		attackablePieces.clear();
+		updateState();
+	}
+	
+	public void updatePosition(moveContainer move){
+		int sourceColumn = move.source.x;
+		int sourceRow = move.source.y;
+		PieceColor sourceColor = pieces[sourceColumn][sourceRow].getColor();
+		switch(sourceColor){
+		case BLACK:
+			pieces[move.destination.x][move.destination.y].setColor(PieceColor.BLACK);
+			pieces[move.source.x][move.source.y].setColor(PieceColor.NULL);
+			break;
+		case WHITE:
+			pieces[move.destination.x][move.destination.y].setColor(PieceColor.WHITE);
+			pieces[move.source.x][move.source.y].setColor(PieceColor.NULL);
+			break;
+		case NULL:
+			break;
+		}
+		repaint();
+		movablePieces.clear();
+		attackablePieces.clear();
+		updateState();
 	}
 	
 	public void paintComponent(Graphics g){
@@ -673,7 +653,7 @@ public class Board extends JPanel {
 						pieceSelectedRow = -1;
 					}
 					else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL){
-						movePiece(pieces[pieceSelectedCol][pieceSelectedRow],mouseCol, mouseRow);
+						movePiece(pieceSelectedCol,pieceSelectedRow,mouseCol, mouseRow);
 						pieceSelectedCol = -1;
 						pieceSelectedRow = -1;
 					}
@@ -708,7 +688,7 @@ public class Board extends JPanel {
 					}
 					//User clicks empty space, attempt to move selected piece there
 					else if(pieces[mouseCol][mouseRow].getColor() == PieceColor.NULL){
-						movePiece(pieces[pieceSelectedCol][pieceSelectedRow],mouseCol, mouseRow);
+						movePiece(pieceSelectedCol,pieceSelectedRow,mouseCol, mouseRow);
 						pieceSelectedCol = -1;
 						pieceSelectedRow = -1;//Deselect space no matter what happens
 					}
@@ -722,7 +702,7 @@ public class Board extends JPanel {
 	}
 	
 	private void doAIMove(Player ai){
-		System.out.println("Doing an AI Move");
+		/*System.out.println("Doing an AI Move");
 		boolean hasMoved = false;
 		Random rn = new Random();
 		int tries = 0;
@@ -744,7 +724,7 @@ public class Board extends JPanel {
 				int moveToRow = rn.nextInt(ROWS);
 				if (pieces[moveToCol][moveToRow].getColor() != PieceColor.NULL)
 					continue;
-				movePiece(pieces[pieceSelectedCol][pieceSelectedRow], moveToCol, moveToRow);
+				movePiece(pieceSelectedCol,pieceSelectedRow, moveToCol, moveToRow);
 				if(pieces[aiPieceCol][aiPieceRow].getColor() == PieceColor.NULL)
 					hasMoved = true;
 				tries++;
@@ -753,13 +733,14 @@ public class Board extends JPanel {
 		if(tries >= 1000 && !hasMoved) updateState();
 		pieceSelectedCol = -1;
 		pieceSelectedRow = -1;
-		repaint();
+		repaint();*/
 	}
 	
 	private void updateState(){
 		switch (boardState){
 		case Init:
 			boardState = GameState.P1_Turn;
+			updateMovablePieces();
 			if(!(player1.isUser())) doAIMove(player1);
 			break;
 		case P1_Turn:
@@ -769,6 +750,7 @@ public class Board extends JPanel {
 				break;
 			}
 			boardState = GameState.P2_Turn;
+			updateMovablePieces();
 			System.out.println("Player 2 turn");
 			if(!(player2.isUser())){
 				doAIMove(player2);
@@ -781,6 +763,7 @@ public class Board extends JPanel {
 				break;
 			}
 			boardState = GameState.P1_Turn;
+			updateMovablePieces();
 			System.out.println("PLayer 1 turn");
 			if(!(player1.isUser())){
 				doAIMove(player1);
@@ -793,7 +776,17 @@ public class Board extends JPanel {
 		turnCounter++;
 	}
 	
+	private class moveContainer{
+		public moveContainer(Position _source, Position _dest) {
+			source = _source;
+			destination = _dest;
+		}
+		public Position source;
+		public Position destination;
+	}
 	private GamePiece[][] pieces;
+	private ArrayList<moveContainer> movablePieces;
+	private ArrayList<moveContainer> attackablePieces;
 	private boolean[][] pieceBoardThere;
 	private boolean[][] attackGridThere = new boolean[5][5];
 	private boolean[][] clearPath = new boolean[3][3];
