@@ -455,7 +455,17 @@ public class Board extends JPanel {
 		repaint();
 		movablePieces.clear();
 		attackablePieces.clear();
-		updateState();
+		updateMovablePieces();
+		int n = 0;
+		for(moveContainer mc: attackablePieces){
+			System.out.printf("Attackable col: %d, row: %d\n", mc.source.x, mc.source.y);
+			if(mc.source.x == move.destination.x && mc.source.y == move.destination.x){
+				n = JOptionPane.showConfirmDialog(this, "End your turn?");
+				break;
+			}
+		}
+		System.out.printf("n = %d\n", n);
+		if(n == 0) updateState();
 	}
 	
 	public void updatePosition(moveContainer move){
